@@ -43,6 +43,7 @@ jobs:
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
-        with:
-          name: Release (WIN-X64)
-          path: **/dist/
+      with:
+        name: Release (WIN-X64)
+        path: '**/dist/*.@(exe|dll)'
+        
