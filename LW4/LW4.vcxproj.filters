@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Controllers">
+      <UniqueIdentifier>{4f484c7e-f354-4ec1-9b06-cfc25127d0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{9945ee55-dcfa-448b-8936-50814e2e6338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Wrappers">
+      <UniqueIdentifier>{cc57a9d7-87bd-4522-a9df-2f6e06f40edd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{5bd45ed2-4443-45f1-9c0e-5d575a5b1ae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers">
+      <UniqueIdentifier>{67e3c11b-effd-4d31-a960-367cb3af4896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Wrappers">
+      <UniqueIdentifier>{5e2ce82f-4eb0-4621-8131-577d20133dd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers\Data">
+      <UniqueIdentifier>{d01dcf37-33f6-4508-8e2a-0313f2b05e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\Data">
+      <UniqueIdentifier>{2db8b52b-0ed3-4d2f-9873-6c3be908067f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers\Views">
+      <UniqueIdentifier>{17c8364a-cc70-4b44-985f-9e4f39ef5a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\Views">
+      <UniqueIdentifier>{53d9cca2-34bd-4a07-9fd6-a53c0826d874}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TalkTableData.h">
+      <Filter>Header Files\Models\Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="Talk.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Mobile.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="DateTime.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="TalkTableData.cpp">
+      <Filter>Source Files\Models\Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicOperationsController.cpp">
+      <Filter>Source Files\Controllers\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="CLIController.cpp">
+      <Filter>Source Files\Controllers\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupingController.h">
+      <Filter>Header Files\Controllers\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupingController.cpp">
+      <Filter>Source Files\Controllers\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="SearchingController.cpp">
+      <Filter>Source Files\Controllers\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupedTalk.h">
+      <Filter>Header Files\Models\Wrappers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DateTime.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Mobile.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Talk.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicOperationsController.h">
+      <Filter>Header Files\Controllers\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="CLIController.h">
+      <Filter>Header Files\Controllers\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchingController.h">
+      <Filter>Header Files\Controllers\Data</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
