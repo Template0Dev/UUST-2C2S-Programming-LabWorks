@@ -46,4 +46,4 @@ jobs:
       with:
         name: Release (WIN-X64)
         path: |
-          '**/${{ env.BUILD_CONFIGURATION }}/*.@(exe|dll)'
+          '${{ env.BUILD_CONFIGURATION }}/**'
