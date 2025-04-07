@@ -58,7 +58,7 @@ namespace LW4
                     int minIndex = i;
                     for (int j = i + 1; j < groupCount; j++)
                     {
-                        if (groups[j].talkCount < groups[minIndex].talkCount)
+                        if (groups[j].talkCount > groups[minIndex].talkCount)
                         {
                             minIndex = j;
                         }
@@ -92,7 +92,6 @@ namespace LW4
                     }
                 }
             }
-
         }
     }
 }

@@ -27,6 +27,9 @@ namespace LW4
                 ~CLIController();
 
                 void beginWork();
+                friend void executeBasicOperation(CLIController& controller, int operation, const std::string& fileName = "");
+                friend void executeGroupingOperation(const CLIController& controller, int operation, const std::string& phoneNumber);
+                friend void executeSearchingOperation(const CLIController& controller, int operation, const std::string& phoneNumber);
 
             private:
                 void proceedWorkCycle();

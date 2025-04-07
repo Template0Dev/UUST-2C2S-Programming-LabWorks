@@ -1,5 +1,7 @@
 #include "CLIController.h"
 #include "BasicOperationsController.h"
+#include "GroupingController.h"
+#include "SearchingController.h"
 #include "Talk.h"
 #include "Utils.h"
 #include <iostream>
@@ -8,260 +10,433 @@
 
 namespace LW4
 {
-    namespace Controllers
-    {
-        namespace Views
-        {
-            CLIController::CLIController()
-            {
-                mainArray = new Models::Talk[INIT_SIZE];
-                workArray = new Models::Talk[INIT_SIZE];
-            }
+	namespace Controllers
+	{
+		namespace Views
+		{
+			CLIController::CLIController()
+			{
+				mainArray = new Models::Talk[INIT_SIZE];
+				workArray = new Models::Talk[INIT_SIZE];
+			}
 
-            CLIController::CLIController(const CLIController& other) : mainCount(other.mainCount), workCount(other.workCount)
-            {
-                mainArray = new Models::Talk[mainCount];
-                workArray = new Models::Talk[workCount];
+			CLIController::CLIController(const CLIController& other) : mainCount(other.mainCount), workCount(other.workCount)
+			{
+				mainArray = new Models::Talk[mainCount];
+				workArray = new Models::Talk[workCount];
 
-                for (int i = 0; i < mainCount; ++i)
-                {
-                    mainArray[i] = other.mainArray[i];
-                }
+				for (int i = 0; i < mainCount; ++i)
+				{
+					mainArray[i] = other.mainArray[i];
+				}
 
-                for (int i = 0; i < workCount; ++i)
-                {
-                    workArray[i] = other.workArray[i];
-                }
-            }
+				for (int i = 0; i < workCount; ++i)
+				{
+					workArray[i] = other.workArray[i];
+				}
+			}
 
-            CLIController::~CLIController()
-            {
-                delete[] mainArray;
-                delete[] workArray;
-            }
+			CLIController::~CLIController()
+			{
+				delete[] mainArray;
+				delete[] workArray;
+			}
 
-            void CLIController::beginWork()
-            {
-                proceedWorkCycle();
-            }
+			void CLIController::beginWork()
+			{
+				proceedWorkCycle();
+			}
 
-            void CLIController::proceedWorkCycle()
-            {
-                int choice;
+			void CLIController::proceedWorkCycle()
+			{
+				int choice;
+				std::string fileName;
+				do
+				{
+					printCommandsMenu();
+					while (!(std::cin >> choice))
+					{
+						std::cin.clear();
+						std::cin.ignore(10000, '\n');
+						std::cout << "Некорректный ввод. Повтор: ";
+					}
+					std::cin.ignore();
 
-                do
-                {
-                    printCommandsMenu();
-                    while (!(std::cin >> choice))
-                    {
-                        std::cin.clear();
-                        std::cin.ignore(10000, '\n');
+					switch (choice)
+					{
+						case 1:
+						{
+							executeBasicOperation(*this, choice);
+							break;
+						}
 
-                        std::cout << "Некорректный ввод. Повтор: ";
-                    }
-                    std::cin.ignore();
+						case 2:
+						{
+							std::cout << "Введите имя файла для загрузки: ";
+							std::getline(std::cin, fileName);
 
-                    // Меню команд.
-                    switch (choice)
-                    {
-                        case 1:
-                        {
-                            Data::BasicOperationsController().loadFromKeyboard(mainArray, workArray, mainCount, workCount);
-                            break;
-                        }
-                        case 2:
-                        {
-                            std::string fileName;
-                            std::cout << "Введите имя файла для загрузки: ";
-                            std::getline(std::cin, fileName);
+							executeBasicOperation(*this, choice, fileName);
+							break;
+						}
+						case 3:
+						{
+							std::cout << "Введите имя файла для сохранения: ";
+							std::getline(std::cin, fileName);
 
-                            if (Data::BasicOperationsController().loadFromFile(fileName, mainArray, workArray, mainCount, workCount))
-                                std::cout << "Данные успешно загружены из файла. Общее количество импортированных записей: " << mainCount << "." << std::endl;
-                            else
-                                std::cout << "Не удалось загрузить данные." << std::endl;
+							executeBasicOperation(*this, choice, fileName);
+							break;
+						}
+						case 4:
+						{
+							bool result = addNewEntrySubFunction();
+							if (result)
+								std::cout << "Запись успешно добавлена." << std::endl;
+							else
+								std::cout << "Добавить запись не удалось." << std::endl;
 
-                            break;
-                        }
-                        case 3:
-                        {
-                            std::string fileName;
-                            std::cout << "Введите имя файла для сохранения: ";
-                            std::getline(std::cin, fileName);
+							break;
+						}
+						case 5:
+						{
+							bool result = removeEntrySubFunction();
+							if (result)
+								std::cout << "Запись удалена." << std::endl;
+							else
+								std::cout << "Ошибка при удалении записи." << std::endl;
 
-                            if (Data::BasicOperationsController().saveToFile(fileName, workArray, workCount))
-                                std::cout << "Удалось сохранить данные в файл." << std::endl;
-                            else
-                                std::cout << "Ошибка при сохранении файла." << std::endl;
+							break;
+						}
 
-                            break;
-                        }
-                        case 4:
-                        {
-                            bool result = addNewEntrySubFunction();
-                            if (result)
-                                std::cout << "Запись успешно добавлена." << std::endl;
-                            else
-                                std::cout << "Добавить запись не удалось." << std::endl;
+						case 6: 
+						case 7: 
+						case 8: 
+						case 9: 
+						case 10:
+						{
+							executeBasicOperation(*this, choice);
+							break;
+						}
 
-                            break;
-                        }
-                        case 5:
-                        {
-                            bool result = removeEntrySubFunction();
-                            if (result)
-                                std::cout << "Запись удалена." << std::endl;
-                            else
-                                std::cout << "Ошибка при удалении записи." << std::endl;
+						case 11:
+						case 12:
+						{
+							std::string phoneNumber;
 
-                            break;
-                        }
-                        case 6:
-                        {
-                            Data::BasicOperationsController().displayData(workArray, workCount);
-                            break;
-                        }
-                        case 7:
-                        {
-                            Data::BasicOperationsController().sortByName(workArray, workCount);
-                            std::cout << "Сортировка по ФИО выполнена." << std::endl;
+							std::cout << "Введите номер телефона для фильтрации (или оставьте пустым для вывода всех): ";
+							std::getline(std::cin, phoneNumber);
 
-                            break;
-                        }
-                        case 8:
-                        {
-                            Data::BasicOperationsController().sortByDate(workArray, workCount);
-                            std::cout << "Сортировка по дате разговора выполнена." << std::endl;
+							executeGroupingOperation(*this, choice, phoneNumber);
+							break;
+						}
 
-                            break;
-                        }
-                        case 9:
-                        {
-                            Data::BasicOperationsController().sortByDuration(workArray, workCount);
-                            std::cout << "Сортировка по длительности разговора выполнена." << std::endl;
+						case 13:
+						case 14:
+						{
+							std::string phoneNumber;
 
-                            break;
-                        }
-                        case 10:
-                        {
-                            Data::BasicOperationsController().resetWorkingArray(mainArray, workArray, mainCount, workCount);
-                            std::cout << "Рабочая копия сброшена к исходной." << std::endl;
+							std::cout << "Введите номер телефона для поиска: ";
+							std::getline(std::cin, phoneNumber);
 
-                            break;
-                        }
-                        case 100:
-                        {
-                            auto copiedController = CLIController(*this);
+							executeSearchingOperation(*this, choice, phoneNumber);
+							break;
+						}
 
-                            std::cout << "Текущий объект:" << std::endl;
-                            Data::BasicOperationsController().displayData(workArray, workCount);
+						case 100: 
+						case 200:
+						{
+							executeBasicOperation(*this, choice);
+							break;
+						}
 
-                            std::cout << std::endl << "Скопированный объект:" << std::endl;
-                            Data::BasicOperationsController().displayData(copiedController.workArray, copiedController.workCount);
+						case 0:
+						{
+							std::cout << "Выход из программы." << std::endl;
+							break;
+						}
+						default:
+						{
+							std::cout << "Неверный выбор. Повторите." << std::endl;
+							break;
+						}
+					}
 
-                            break;
-                        }
-                        case 200:
-                        {
-                            auto newController = CLIController();
-                            newController = *this;
+					if (choice != 0)
+					{
+						std::cout << "Процедура завершена..." << std::endl;
+						system("PAUSE");
+					}
+					system("CLS");
+				} while (choice != 0);
+			}
 
-                            std::cout << "Текущий объект:" << std::endl;
-                            Data::BasicOperationsController().displayData(workArray, workCount);
+			void executeBasicOperation(CLIController& controller, int operation, const std::string& fileName)
+			{
+				Data::BasicOperationsController dataController;
+				switch (operation)
+				{
+					case 1:
+					{
+						dataController.loadFromKeyboard(controller.mainArray, controller.workArray, controller.mainCount, controller.workCount);
+						break;
+					}
+					case 2:
+					{
+						if (dataController.loadFromFile(fileName, controller.mainArray, controller.workArray, controller.mainCount, controller.workCount))
+							std::cout << "Данные успешно загружены из файла. Общее количество импортированных записей: " << controller.mainCount << "." << std::endl;
+						else
+							std::cout << "Не удалось загрузить данные." << std::endl;
 
-                            std::cout << std::endl << "Присвоенный объект:" << std::endl;
-                            Data::BasicOperationsController().displayData(newController.workArray, newController.workCount);
+						break;
+					}
+					case 3:
+					{
+						if (dataController.saveToFile(fileName, controller.workArray, controller.workCount))
+							std::cout << "Удалось сохранить данные в файл." << std::endl;
+						else
+							std::cout << "Ошибка при сохранении файла." << std::endl;
 
-                            break;
-                        }
-                        case 0:
-                        {
-                            std::cout << "Выход из программы." << std::endl;
-                            break;
-                        }
-                        default:
-                        {
-                            std::cout << "Неверный выбор. Повторите." << std::endl;
-                            break;
-                        }
-                    }
+						break;
+					}
 
-                    if (choice != 0)
-                    {
-                        std::cout << "Процедура завершена..." << std::endl;
-                        system("PAUSE");
-                    }
-                    system("CLS");
-                } while (choice != 0);
-            }
+					case 6:
+					{
+						dataController.displayData(controller.workArray, controller.workCount);
+						break;
+					}
+					case 7:
+					{
+						dataController.sortByName(controller.workArray, controller.workCount);
+						std::cout << "Сортировка по ФИО выполнена." << std::endl;
 
-            void CLIController::printCommandsMenu() const
-            {
-                std::cout << "Меню:" << std::endl;
-                std::cout << "1. Загрузка данных с клавиатуры" << std::endl;
-                std::cout << "2. Загрузка данных из файла" << std::endl;
-                std::cout << "3. Сохранение обработки в файл" << std::endl;
-                std::cout << "4. Добавление записи" << std::endl;
-                std::cout << "5. Удаление записи" << std::endl;
-                std::cout << "6. Вывод данных на экран" << std::endl;
-                std::cout << "7. Алфавитная сортировка по ФИО (комплексная сортировка с перегрузкой)" << std::endl;
-                std::cout << "8. Сортировка по дате разговора" << std::endl;
-                std::cout << "9. Сортировка по длительности разговора" << std::endl;
-                std::cout << "10. Сброс рабочей копии к исходной" << std::endl;
-                std::cout << "100. Проверка конструктора копирования" << std::endl;
-                std::cout << "200. Проверка перегрузки присваивания" << std::endl;
-                std::cout << "0. Выход" << std::endl;
+						break;
+					}
+					case 8:
+					{
+						dataController.sortByDate(controller.workArray, controller.workCount);
+						std::cout << "Сортировка по дате разговора выполнена." << std::endl;
 
-                std::cout << std::endl << "Выберите действие: ";
-            }
+						break;
+					}
+					case 9:
+					{
+						dataController.sortByDuration(controller.workArray, controller.workCount);
+						std::cout << "Сортировка по длительности разговора выполнена." << std::endl;
 
-            bool CLIController::addNewEntrySubFunction()
-            {
-                Models::Talk newEntry = userGuidedTalkCreation();
-                return Data::BasicOperationsController().addRecord(newEntry, workArray, workCount);
-            }
+						break;
+					}
+					case 10:
+					{
+						dataController.resetWorkingArray(controller.mainArray, controller.workArray, controller.mainCount, controller.workCount);
+						std::cout << "Рабочая копия сброшена к исходной." << std::endl;
 
-            bool CLIController::removeEntrySubFunction()
-            {
-                int index;
-                std::cout << "Введите индекс записи для удаления (начиная с 0): ";
-                while (!(std::cin >> index))
-                {
-                    std::cout << "Некорректный ввод. Повторите: ";
-                    std::cin.clear();
-                    std::cin.ignore(10000, '\n');
-                }
-                std::cin.ignore();
+						break;
+					}
+					case 100:
+					{
+						auto copiedController = CLIController(controller);
 
-                return Data::BasicOperationsController().deleteRecord(index, workArray, workCount);
-            }
+						std::cout << "Текущий объект:" << std::endl;
+						dataController.displayData(controller.workArray, controller.workCount);
 
-            CLIController& CLIController::operator =(const CLIController& other)
-            {
-                // Предотвращение самокопирования.
-                if (this == &other)
-                    return *this;
+						std::cout << std::endl << "Скопированный объект:" << std::endl;
+						dataController.displayData(copiedController.workArray, copiedController.workCount);
 
-                delete[] mainArray;
-                delete[] workArray;
+						break;
+					}
+					case 200:
+					{
+						auto newController = CLIController();
+						newController = controller;
 
-                mainCount = other.mainCount;
-                workCount = other.workCount;
+						std::cout << "Текущий объект:" << std::endl;
+						dataController.displayData(controller.workArray, controller.workCount);
 
-                mainArray = new Models::Talk[mainCount];
-                workArray = new Models::Talk[workCount];
+						std::cout << std::endl << "Присвоенный объект:" << std::endl;
+						dataController.displayData(newController.workArray, newController.workCount);
 
-                for (int i = 0; i < mainCount; ++i)
-                {
-                    mainArray[i] = other.mainArray[i]; // Assuming Models::Talk has a proper copy assignment
-                }
+						break;
+					}
 
-                for (int i = 0; i < workCount; ++i)
-                {
-                    workArray[i] = other.workArray[i];
-                }
+					default:
+					{
+						std::cout << "Неверный выбор операции." << std::endl;
+						break;
+					}
+				}
+			}
 
-                return *this;
-            }
-        }
-    }
+			void executeGroupingOperation(const CLIController& controller, int operation, const std::string& phoneNumber)
+			{
+				Data::GroupingController groupingController;
+				int groupCount = 0;
+				auto* groups = groupingController.groupByPhone(controller.workArray, controller.workCount, groupCount);
+
+				switch (operation)
+				{
+					case 11:
+					{
+						groupingController.sortByTalkCount(groups, groupCount);
+						std::cout << "Группировка по номеру телефона (сортировка по количеству звонков):" << std::endl;
+
+						break;
+					}
+					case 12:
+					{
+						groupingController.sortByPhoneNumber(groups, groupCount);
+						std::cout << "Группировка по номеру телефона (сортировка по номеру):" << std::endl;
+
+						break;
+					}
+					default:
+					{
+						std::cout << "Неверный выбор операции группировки." << std::endl;
+						break;
+					}
+				}
+
+				bool found = false;
+				if (!phoneNumber.empty())
+				{
+					for (int i = 0; i < groupCount; i++)
+					{
+						if (groups[i].phoneNumber == phoneNumber)
+						{
+							std::cout << "Номер: " << groups[i].phoneNumber << ", количество звонков: " << groups[i].talkCount << std::endl;
+							found = true;
+						}
+					}
+					if (!found)
+						std::cout << "Записей с данным номером не найдено." << std::endl;
+				}
+				else
+				{
+					for (int i = 0; i < groupCount; i++)
+						std::cout << "Номер: " << groups[i].phoneNumber << ", количество звонков: " << groups[i].talkCount << std::endl;
+				}
+
+				delete[] groups;
+			}
+
+			void executeSearchingOperation(const CLIController& controller, int operation, const std::string& phoneNumber)
+			{
+				Data::SearchingController searchingController;
+				int matchCount = 0;
+
+				Models::Talk* matches = searchingController.searchByPhoneNumber(controller.workArray, controller.workCount, phoneNumber, matchCount);
+				if (matchCount == 0)
+				{
+					std::cout << "Записей с номером " << phoneNumber << " не найдено." << std::endl;
+					return;
+				}
+				switch (operation)
+				{
+					case 13:
+					{
+						searchingController.sortByCallDate(matches, matchCount);
+						std::cout << "Поиск по номеру телефона с сортировкой по дате начала разговора:" << std::endl;
+
+						break;
+					}
+					case 14:
+					{
+						searchingController.sortByCallTime(matches, matchCount);
+						std::cout << "Поиск по номеру телефона с сортировкой по времени начала разговора:" << std::endl;
+
+						break;
+					}
+					default:
+					{
+						std::cout << "Неверный выбор операции поиска." << std::endl;
+						break;
+					}
+				}
+
+				Data::BasicOperationsController basicController;
+				basicController.displayData(matches, matchCount);
+
+				delete[] matches;
+			}
+
+			void CLIController::printCommandsMenu() const
+			{
+				std::cout << "Меню:" << std::endl;
+
+				std::cout << "1. Загрузка данных с клавиатуры" << std::endl;
+				std::cout << "2. Загрузка данных из файла" << std::endl;
+				std::cout << "3. Сохранение обработки в файл" << std::endl;
+
+				std::cout << "4. Добавление записи" << std::endl;
+				std::cout << "5. Удаление записи" << std::endl;
+				std::cout << "6. Вывод данных на экран" << std::endl;
+
+				std::cout << "7. Алфавитная сортировка по ФИО (комплексная сортировка с перегрузкой)" << std::endl;
+				std::cout << "8. Сортировка по дате разговора" << std::endl;
+				std::cout << "9. Сортировка по длительности разговора" << std::endl;
+
+				std::cout << "10. Сброс рабочей копии к исходной" << std::endl;
+
+				std::cout << "11. Группировка по номеру телефона (сортировка по количеству звонков)" << std::endl;
+				std::cout << "12. Группировка по номеру телефона (сортировка по номеру)" << std::endl;
+
+				std::cout << "13. Поиск по номеру телефона (с сортировкой по дате начала разговора)" << std::endl;
+				std::cout << "14. Поиск по номеру телефона (с сортировкой по времени начала разговора)" << std::endl;
+
+				std::cout << "100. Проверка конструктора копирования" << std::endl;
+				std::cout << "200. Проверка перегрузки присваивания" << std::endl;
+
+				std::cout << "0. Выход" << std::endl;
+
+				std::cout << std::endl << "Выберите действие: ";
+			}
+
+			bool CLIController::addNewEntrySubFunction()
+			{
+				Models::Talk newEntry = userGuidedTalkCreation();
+				return Data::BasicOperationsController().addRecord(newEntry, workArray, workCount);
+			}
+
+			bool CLIController::removeEntrySubFunction()
+			{
+				int index;
+				std::cout << "Введите индекс записи для удаления (начиная с 0): ";
+				while (!(std::cin >> index))
+				{
+					std::cout << "Некорректный ввод. Повторите: ";
+					std::cin.clear();
+					std::cin.ignore(10000, '\n');
+				}
+				std::cin.ignore();
+
+				return Data::BasicOperationsController().deleteRecord(index, workArray, workCount);
+			}
+
+			CLIController& CLIController::operator =(const CLIController& other)
+			{
+				// Предотвращение самокопирования.
+				if (this == &other)
+					return *this;
+
+				delete[] mainArray;
+				delete[] workArray;
+
+				mainCount = other.mainCount;
+				workCount = other.workCount;
+
+				mainArray = new Models::Talk[mainCount];
+				workArray = new Models::Talk[workCount];
+
+				for (int i = 0; i < mainCount; ++i)
+				{
+					mainArray[i] = other.mainArray[i]; // Assuming Models::Talk has a proper copy assignment
+				}
+
+				for (int i = 0; i < workCount; ++i)
+				{
+					workArray[i] = other.workArray[i];
+				}
+
+				return *this;
+			}
+		}
+	}
 }
