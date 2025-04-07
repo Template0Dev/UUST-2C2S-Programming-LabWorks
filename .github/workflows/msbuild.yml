@@ -41,4 +41,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Release (WIN-X64)
-        path: ${{ ARCH_CONFIGURATION }}/${{ env.BUILD_CONFIGURATION }}/**
+        path: ${{ env.ARCH_CONFIGURATION }}/${{ env.BUILD_CONFIGURATION }}/**
