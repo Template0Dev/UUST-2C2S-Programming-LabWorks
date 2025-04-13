@@ -12,12 +12,13 @@ namespace LW4
         namespace Data
         {
 
+
             Models::Talk* SearchingController::searchByPhoneNumber(const Models::Talk* array, int count, const std::string& phoneNumber, int& matchCount) const
             {
                 matchCount = 0;
                 for (int i = 0; i < count; i++)
                 {
-                    if (array[i].getMobile().getPhoneNumber() == phoneNumber)
+                    if (array[i].getMobile().getPhoneNumber().find(phoneNumber) == 0)
                     {
                         matchCount++;
                     }
@@ -27,11 +28,12 @@ namespace LW4
                 int index = 0;
                 for (int i = 0; i < count; i++)
                 {
-                    if (array[i].getMobile().getPhoneNumber() == phoneNumber)
+                    if (array[i].getMobile().getPhoneNumber().find(phoneNumber) == 0)
                     {
                         matches[index++] = array[i];
                     }
                 }
+
                 return matches;
             }
 

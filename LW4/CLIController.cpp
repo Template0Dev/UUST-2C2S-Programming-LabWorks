@@ -117,20 +117,19 @@ namespace LW4
 							break;
 						}
 
-						case 11:
-						case 12:
+						case 20:
+						case 21:
+						case 22:
 						{
 							std::string phoneNumber;
 
-							std::cout << "Введите номер телефона для фильтрации (или оставьте пустым для вывода всех): ";
-							std::getline(std::cin, phoneNumber);
-
-							executeGroupingOperation(*this, choice, phoneNumber);
+							executeGroupingOperation(*this, choice);
 							break;
 						}
 
-						case 13:
-						case 14:
+						case 30:
+						case 31:
+						case 32:
 						{
 							std::string phoneNumber;
 
@@ -265,7 +264,7 @@ namespace LW4
 				}
 			}
 
-			void executeGroupingOperation(const CLIController& controller, int operation, const std::string& phoneNumber)
+			void executeGroupingOperation(const CLIController& controller, int operation)
 			{
 				Data::GroupingController groupingController;
 				int groupCount = 0;
@@ -273,14 +272,19 @@ namespace LW4
 
 				switch (operation)
 				{
-					case 11:
+					case 20:
+					{
+						std::cout << "Базовый результат группировки:" << std::endl;
+						break;
+					}
+					case 21:
 					{
 						groupingController.sortByTalkCount(groups, groupCount);
 						std::cout << "Группировка по номеру телефона (сортировка по количеству звонков):" << std::endl;
 
 						break;
 					}
-					case 12:
+					case 22:
 					{
 						groupingController.sortByPhoneNumber(groups, groupCount);
 						std::cout << "Группировка по номеру телефона (сортировка по номеру):" << std::endl;
@@ -294,24 +298,20 @@ namespace LW4
 					}
 				}
 
-				bool found = false;
-				if (!phoneNumber.empty())
+				groupingController.printGroupsTable(std::cout, groups, groupCount);
+
+				char confirmation;
+				std::cout << "Сохранить результат группировки в файл (Y/N)? ";
+				std::cin >> confirmation;
+				if (confirmation == 'y' || confirmation == 'Y')
 				{
-					for (int i = 0; i < groupCount; i++)
-					{
-						if (groups[i].phoneNumber == phoneNumber)
-						{
-							std::cout << "Номер: " << groups[i].phoneNumber << ", количество звонков: " << groups[i].talkCount << std::endl;
-							found = true;
-						}
-					}
-					if (!found)
-						std::cout << "Записей с данным номером не найдено." << std::endl;
-				}
-				else
-				{
-					for (int i = 0; i < groupCount; i++)
-						std::cout << "Номер: " << groups[i].phoneNumber << ", количество звонков: " << groups[i].talkCount << std::endl;
+					std::string fileName;
+					std::cout << "Введите название файла для сохранения: ";
+					std::cin >> fileName;
+
+					auto result = groupingController.saveToFile(fileName, groups, groupCount);
+					if (result)
+						std::cout << "Файл успешно сохранён." << std::endl;
 				}
 
 				delete[] groups;
@@ -330,14 +330,19 @@ namespace LW4
 				}
 				switch (operation)
 				{
-					case 13:
+					case 30:
+					{
+						std::cout << "Базовый поиск:" << std::endl;
+						break;
+					}
+					case 31:
 					{
 						searchingController.sortByCallDate(matches, matchCount);
 						std::cout << "Поиск по номеру телефона с сортировкой по дате начала разговора:" << std::endl;
 
 						break;
 					}
-					case 14:
+					case 32:
 					{
 						searchingController.sortByCallTime(matches, matchCount);
 						std::cout << "Поиск по номеру телефона с сортировкой по времени начала разговора:" << std::endl;
@@ -353,6 +358,20 @@ namespace LW4
 
 				Data::BasicOperationsController basicController;
 				basicController.displayData(matches, matchCount);
+
+				char confirmation;
+				std::cout << "Сохранить результат группировки в файл (Y/N)? ";
+				std::cin >> confirmation;
+				if (confirmation == 'y' || confirmation == 'Y')
+				{
+					std::string fileName;
+					std::cout << "Введите название файла для сохранения: ";
+					std::cin >> fileName;
+
+					auto result = Data::BasicOperationsController().saveToFile(fileName, matches, matchCount);
+					if (result)
+						std::cout << "Файл успешно сохранён." << std::endl;
+				}
 
 				delete[] matches;
 			}
@@ -375,11 +394,13 @@ namespace LW4
 
 				std::cout << "10. Сброс рабочей копии к исходной" << std::endl;
 
-				std::cout << "11. Группировка по номеру телефона (сортировка по количеству звонков)" << std::endl;
-				std::cout << "12. Группировка по номеру телефона (сортировка по номеру)" << std::endl;
+				std::cout << "20. Группировка по номеру телефона" << std::endl;
+				std::cout << "21. Группировка по номеру телефона (сортировка по количеству звонков)" << std::endl;
+				std::cout << "22. Группировка по номеру телефона (сортировка по номеру)" << std::endl;
 
-				std::cout << "13. Поиск по номеру телефона (с сортировкой по дате начала разговора)" << std::endl;
-				std::cout << "14. Поиск по номеру телефона (с сортировкой по времени начала разговора)" << std::endl;
+				std::cout << "30. Поиск по номеру телефона" << std::endl;
+				std::cout << "31. Поиск по номеру телефона (с сортировкой по дате начала разговора)" << std::endl;
+				std::cout << "32. Поиск по номеру телефона (с сортировкой по времени начала разговора)" << std::endl;
 
 				std::cout << "100. Проверка конструктора копирования" << std::endl;
 				std::cout << "200. Проверка перегрузки присваивания" << std::endl;

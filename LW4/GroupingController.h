@@ -18,6 +18,9 @@ namespace LW4
 
 				void sortByTalkCount(Models::Wrappers::GroupedTalk* groups, int groupCount) const;
 				void sortByPhoneNumber(Models::Wrappers::GroupedTalk* groups, int groupCount) const;
+
+				void printGroupsTable(std::ostream& output, const Models::Wrappers::GroupedTalk* groups, int count) const;
+				bool saveToFile(const std::string& fileName, const Models::Wrappers::GroupedTalk* groups, int count) const;
 			};
 		}
 	}

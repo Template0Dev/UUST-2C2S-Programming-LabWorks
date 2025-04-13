@@ -42,7 +42,7 @@ namespace LW4
 			}
 			void TalkTableData::setTableData(const std::array<int, 8>& newTableDataVal)
 			{
-				tableData = tableData;
+				tableData = newTableDataVal;
 			}
 
 			// Operators.
