@@ -14,6 +14,8 @@ namespace LW4
 	{
 		namespace Views
 		{
+#pragma region Region: Constructors.
+
 			CLIController::CLIController()
 			{
 				mainArray = new Models::Talk[INIT_SIZE];
@@ -41,6 +43,9 @@ namespace LW4
 				delete[] mainArray;
 				delete[] workArray;
 			}
+#pragma endregion
+
+#pragma region Region: Main Functions.
 
 			void CLIController::beginWork()
 			{
@@ -66,7 +71,7 @@ namespace LW4
 					{
 						case 1:
 						{
-							executeBasicOperation(*this, choice);
+							executeBasicOperation(*this, choice, "");
 							break;
 						}
 
@@ -113,7 +118,7 @@ namespace LW4
 						case 9: 
 						case 10:
 						{
-							executeBasicOperation(*this, choice);
+							executeBasicOperation(*this, choice, "");
 							break;
 						}
 
@@ -141,9 +146,34 @@ namespace LW4
 						}
 
 						case 100: 
+						{
+							executeBasicOperation(*this, choice, "");
+							break;
+						}
+						case 110:
+						{
+							executeGroupingOperation(*this, choice);
+							break;
+						}
+						case 120:
+						{
+							executeSearchingOperation(*this, choice, getPhoneNumber());
+							break;
+						}
+
 						case 200:
 						{
-							executeBasicOperation(*this, choice);
+							executeBasicOperation(*this, choice, "");
+							break;
+						}
+						case 210:
+						{
+							executeGroupingOperation(*this, choice);
+							break;
+						}
+						case 220:
+						{
+							executeSearchingOperation(*this, choice, getPhoneNumber());
 							break;
 						}
 
@@ -166,6 +196,45 @@ namespace LW4
 					}
 					system("CLS");
 				} while (choice != 0);
+			}
+			
+			void CLIController::printCommandsMenu() const
+			{
+				std::cout << "Меню:" << std::endl;
+
+				std::cout << "1. Загрузка данных с клавиатуры" << std::endl;
+				std::cout << "2. Загрузка данных из файла" << std::endl;
+				std::cout << "3. Сохранение обработки в файл" << std::endl;
+
+				std::cout << "4. Добавление записи" << std::endl;
+				std::cout << "5. Удаление записи" << std::endl;
+				std::cout << "6. Вывод данных на экран" << std::endl;
+
+				std::cout << "7. Алфавитная сортировка по ФИО (комплексная сортировка с перегрузкой)" << std::endl;
+				std::cout << "8. Сортировка по дате разговора" << std::endl;
+				std::cout << "9. Сортировка по длительности разговора" << std::endl;
+
+				std::cout << "10. Сброс рабочей копии к исходной" << std::endl;
+
+				std::cout << "20. Группировка по номеру телефона" << std::endl;
+				std::cout << "21. Группировка по номеру телефона (сортировка по количеству звонков)" << std::endl;
+				std::cout << "22. Группировка по номеру телефона (сортировка по номеру)" << std::endl;
+
+				std::cout << "30. Поиск по номеру телефона" << std::endl;
+				std::cout << "31. Поиск по номеру телефона (с сортировкой по дате начала разговора)" << std::endl;
+				std::cout << "32. Поиск по номеру телефона (с сортировкой по времени начала разговора)" << std::endl;
+
+				std::cout << "100. Проверка конструктора копирования" << std::endl;
+				std::cout << "110. Проверка конструктора копирования группировки" << std::endl;
+				std::cout << "120. Проверка конструктора копирования поиска" << std::endl;
+
+				std::cout << "200. Проверка перегрузки присваивания" << std::endl;
+				std::cout << "210. Проверка перегрузки присваивания группировки" << std::endl;
+				std::cout << "220. Проверка перегрузки присваивания поиска" << std::endl;
+
+				std::cout << "0. Выход" << std::endl;
+
+				std::cout << std::endl << "Выберите действие: ";
 			}
 
 			void executeBasicOperation(CLIController& controller, int operation, const std::string& fileName)
@@ -244,14 +313,19 @@ namespace LW4
 					}
 					case 200:
 					{
-						auto newController = CLIController();
-						newController = controller;
+						CLIController newControllerA;
+						CLIController newControllerB;
+
+						newControllerB = newControllerA = controller;
 
 						std::cout << "Текущий объект:" << std::endl;
 						dataController.displayData(controller.workArray, controller.workCount);
 
-						std::cout << std::endl << "Присвоенный объект:" << std::endl;
-						dataController.displayData(newController.workArray, newController.workCount);
+						std::cout << std::endl << "Присвоенный объект A:" << std::endl;
+						dataController.displayData(newControllerA.workArray, newControllerA.workCount);
+
+						std::cout << std::endl << "Присвоенный объект B:" << std::endl;
+						dataController.displayData(newControllerB.workArray, newControllerB.workCount);
 
 						break;
 					}
@@ -291,6 +365,40 @@ namespace LW4
 
 						break;
 					}
+
+					case 110:
+					{
+						auto newGroupController = Data::GroupingController(groupingController);
+
+						int newGroupsCount = 0;
+						auto const* newGroups = newGroupController.groupByPhone(controller.workArray, controller.workCount, newGroupsCount);
+
+						std::cout << std::endl << "Копия контроллера:" << std::endl;
+						newGroupController.printGroupsTable(std::cout, newGroups, newGroupsCount);
+
+						std::cout << std::endl << "Основной контроллер:" << std::endl;
+						break;
+					}
+					case 210:
+					{
+						Data::GroupingController newGroupingControllerA;
+						Data::GroupingController newGroupingControllerB;
+						newGroupingControllerB = newGroupingControllerA = groupingController;
+
+						int newGroupsCountB = 0;
+						auto const* newGroupsB = newGroupingControllerB.groupByPhone(controller.workArray, controller.workCount, newGroupsCountB);
+						std::cout << std::endl << "Результат работы переприсвоенного контроллера (B):" << std::endl;
+						newGroupingControllerB.printGroupsTable(std::cout, newGroupsB, newGroupsCountB);
+
+						int newGroupsCountA = 0;
+						auto const* newGroupsA = newGroupingControllerA.groupByPhone(controller.workArray, controller.workCount, newGroupsCountA);
+						std::cout << std::endl << "Результат работы переприсвоенного контроллера (A):" << std::endl;
+						newGroupingControllerA.printGroupsTable(std::cout, newGroupsA, newGroupsCountA);
+
+						std::cout << std::endl << "Результат работы основного контроллера:" << std::endl;
+						break;
+					}
+
 					default:
 					{
 						std::cout << "Неверный выбор операции группировки." << std::endl;
@@ -301,7 +409,7 @@ namespace LW4
 				groupingController.printGroupsTable(std::cout, groups, groupCount);
 
 				char confirmation;
-				std::cout << "Сохранить результат группировки в файл (Y/N)? ";
+				std::cout << std::endl << "Сохранить результат группировки в файл (Y/N)? ";
 				std::cin >> confirmation;
 				if (confirmation == 'y' || confirmation == 'Y')
 				{
@@ -317,7 +425,7 @@ namespace LW4
 				delete[] groups;
 			}
 
-			void executeSearchingOperation(const CLIController& controller, int operation, const std::string& phoneNumber)
+			void executeSearchingOperation(CLIController& controller, int operation, const std::string& phoneNumber)
 			{
 				Data::SearchingController searchingController;
 				int matchCount = 0;
@@ -373,42 +481,23 @@ namespace LW4
 						std::cout << "Файл успешно сохранён." << std::endl;
 				}
 
-				delete[] matches;
+				std::cout << "Перезаписать рабочий массив результатами поиска (Y/N)? ";
+				std::cin >> confirmation;
+				if (confirmation == 'y' || confirmation == 'Y')
+				{
+					delete[] controller.workArray;
+
+					controller.workArray = matches;
+					controller.workCount = matchCount;
+				}
+				else
+				{
+					delete[] matches;
+				}
 			}
+#pragma endregion
 
-			void CLIController::printCommandsMenu() const
-			{
-				std::cout << "Меню:" << std::endl;
-
-				std::cout << "1. Загрузка данных с клавиатуры" << std::endl;
-				std::cout << "2. Загрузка данных из файла" << std::endl;
-				std::cout << "3. Сохранение обработки в файл" << std::endl;
-
-				std::cout << "4. Добавление записи" << std::endl;
-				std::cout << "5. Удаление записи" << std::endl;
-				std::cout << "6. Вывод данных на экран" << std::endl;
-
-				std::cout << "7. Алфавитная сортировка по ФИО (комплексная сортировка с перегрузкой)" << std::endl;
-				std::cout << "8. Сортировка по дате разговора" << std::endl;
-				std::cout << "9. Сортировка по длительности разговора" << std::endl;
-
-				std::cout << "10. Сброс рабочей копии к исходной" << std::endl;
-
-				std::cout << "20. Группировка по номеру телефона" << std::endl;
-				std::cout << "21. Группировка по номеру телефона (сортировка по количеству звонков)" << std::endl;
-				std::cout << "22. Группировка по номеру телефона (сортировка по номеру)" << std::endl;
-
-				std::cout << "30. Поиск по номеру телефона" << std::endl;
-				std::cout << "31. Поиск по номеру телефона (с сортировкой по дате начала разговора)" << std::endl;
-				std::cout << "32. Поиск по номеру телефона (с сортировкой по времени начала разговора)" << std::endl;
-
-				std::cout << "100. Проверка конструктора копирования" << std::endl;
-				std::cout << "200. Проверка перегрузки присваивания" << std::endl;
-
-				std::cout << "0. Выход" << std::endl;
-
-				std::cout << std::endl << "Выберите действие: ";
-			}
+#pragma region Region: Additional Functions.
 
 			bool CLIController::addNewEntrySubFunction()
 			{
@@ -430,10 +519,12 @@ namespace LW4
 
 				return Data::BasicOperationsController().deleteRecord(index, workArray, workCount);
 			}
+#pragma endregion
+
+#pragma region Region: Operators.
 
 			CLIController& CLIController::operator =(const CLIController& other)
 			{
-				// Предотвращение самокопирования.
 				if (this == &other)
 					return *this;
 
@@ -448,7 +539,7 @@ namespace LW4
 
 				for (int i = 0; i < mainCount; ++i)
 				{
-					mainArray[i] = other.mainArray[i]; // Assuming Models::Talk has a proper copy assignment
+					mainArray[i] = other.mainArray[i];
 				}
 
 				for (int i = 0; i < workCount; ++i)
@@ -458,6 +549,7 @@ namespace LW4
 
 				return *this;
 			}
+#pragma endregion
 		}
 	}
 }

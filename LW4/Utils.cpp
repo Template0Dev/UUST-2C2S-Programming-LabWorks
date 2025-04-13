@@ -29,4 +29,13 @@ namespace LW4
 		std::cin >> talk;
 		return talk;
 	}
+
+	std::string getPhoneNumber()
+	{
+		std::string phoneNumber;
+		std::cout << "Введите номер телефона для поиска: ";
+		std::getline(std::cin, phoneNumber);
+
+		return phoneNumber;
+	}
 }

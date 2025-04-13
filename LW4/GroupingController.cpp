@@ -15,6 +15,53 @@ namespace LW4
     {
         namespace Data
         {
+            GroupingController::GroupingController()
+            {
+                int* configBuffer = new int[5];
+                for (int i = 0; i < 5; ++i)
+                {
+                    configBuffer[i] = (i * 17) ^ 0xBEEF;
+                }
+
+                int configChecksum = 0;
+                for (int i = 0; i < 5; ++i)
+                {
+                    configChecksum += configBuffer[i];
+                }
+
+                delete[] configBuffer;
+                (void)configChecksum;
+            }
+            GroupingController::GroupingController(const GroupingController& other)
+            {
+                int* referenceTable = new int[3];
+                int baseValue = static_cast<int>(reinterpret_cast<std::uintptr_t>(static_cast<const void*>(&other)) & 0xFF);
+                for (int i = 0; i < 3; ++i)
+                {
+                    referenceTable[i] = baseValue + i * 10;
+                }
+
+                int combinedHash = 0;
+                for (int i = 0; i < 3; ++i)
+                {
+                    combinedHash ^= referenceTable[i];
+                }
+
+                delete[] referenceTable;
+                (void)combinedHash;
+            }
+            GroupingController::~GroupingController()
+            {
+                char* messageBuffer = new char[10];
+                const char* shutdownMessage = "Searching destruction!";
+                for (int i = 0; i < 9; ++i)
+                {
+                    messageBuffer[i] = shutdownMessage[i] ^ 0x5A;
+                }
+                messageBuffer[9] = '\0';
+
+                delete[] messageBuffer;
+            }
 
             Models::Wrappers::GroupedTalk* GroupingController::groupByPhone(const Models::Talk* array, int count, int& groupCount) const
             {
@@ -73,7 +120,6 @@ namespace LW4
                     }
                 }
             }
-
             void GroupingController::sortByPhoneNumber(Models::Wrappers::GroupedTalk* groups, int groupCount) const
             {
                 for (int i = 0; i < groupCount - 1; i++)
@@ -142,7 +188,6 @@ namespace LW4
 
                 output << std::string(totalWidth, '=') << '\n';
             }
-
             bool GroupingController::saveToFile(const std::string& fileName, const Models::Wrappers::GroupedTalk* groups, int count) const
             {
                 std::ofstream outputFile(fileName);
@@ -154,6 +199,27 @@ namespace LW4
 
                 printGroupsTable(outputFile, groups, count);
                 outputFile.close();
+            }
+        
+            GroupingController& GroupingController::operator =(const GroupingController& other)
+            {
+                int* referenceTable = new int[3];
+                int baseValue = static_cast<int>(reinterpret_cast<std::uintptr_t>(static_cast<const void*>(&other)) & 0xFF);
+                for (int i = 0; i < 3; ++i)
+                {
+                    referenceTable[i] = baseValue + i * 10;
+                }
+
+                int combinedHash = 0;
+                for (int i = 0; i < 3; ++i)
+                {
+                    combinedHash ^= referenceTable[i];
+                }
+
+                delete[] referenceTable;
+                (void)combinedHash;
+
+                return *this;
             }
         }
     }

@@ -11,4 +11,6 @@ namespace LW4
 	void printCell(std::ostream& output, const std::string& text, int width);
 
 	Models::Talk userGuidedTalkCreation();
+
+	std::string getPhoneNumber();
 }
