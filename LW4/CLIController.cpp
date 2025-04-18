@@ -457,6 +457,42 @@ namespace LW4
 
 						break;
 					}
+
+					case 120:
+					{
+						Data::BasicOperationsController baseController;
+						auto newSearchController = Data::SearchingController(searchingController);
+
+						int newMatchCount = 0;
+						auto const* newMatches = newSearchController.searchByPhoneNumber(controller.workArray, controller.workCount, phoneNumber, newMatchCount);
+
+						std::cout << std::endl << "Копия контроллера:" << std::endl;
+						baseController.displayData(newMatches, matchCount);
+
+						std::cout << std::endl << "Основной контроллер:" << std::endl;
+						break;
+					}
+					case 220:
+					{
+						Data::BasicOperationsController baseController;
+						Data::SearchingController newSearchControllerA;
+						Data::SearchingController newSearchControllerB;
+						newSearchControllerB = newSearchControllerA = searchingController;
+
+						int newMatchesCountB = 0;
+						auto const* newMatchesB = newSearchControllerB.searchByPhoneNumber(controller.workArray, controller.workCount, phoneNumber, newMatchesCountB);
+						std::cout << std::endl << "Результат работы переприсвоенного контроллера (B):" << std::endl;
+						baseController.displayData(newMatchesB, newMatchesCountB);
+
+						int newMatchesCountA = 0;
+						auto const* newMatchesA = newSearchControllerA.searchByPhoneNumber(controller.workArray, controller.workCount, phoneNumber, newMatchesCountA);
+						std::cout << std::endl << "Результат работы переприсвоенного контроллера (A):" << std::endl;
+						baseController.displayData(newMatchesA, newMatchesCountA);
+
+						std::cout << std::endl << "Результат работы основного контроллера:" << std::endl;
+						break;
+					}
+
 					default:
 					{
 						std::cout << "Неверный выбор операции поиска." << std::endl;
@@ -468,7 +504,7 @@ namespace LW4
 				basicController.displayData(matches, matchCount);
 
 				char confirmation;
-				std::cout << "Сохранить результат группировки в файл (Y/N)? ";
+				std::cout << "Сохранить результат поиска в файл (Y/N)? ";
 				std::cin >> confirmation;
 				if (confirmation == 'y' || confirmation == 'Y')
 				{
