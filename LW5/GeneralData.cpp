@@ -1,5 +1,4 @@
 #include "GeneralData.h"
-#include <iostream>
 
 
 namespace LW5
@@ -10,8 +9,8 @@ namespace LW5
         {
 #pragma region Region: Basic Operations.
 
-            void GeneralData::loadFromKeyboard(Models::Talk* mainArray, Models::Talk* workArray, int& mainCount, int& workCount) { basicOperationsController.loadFromKeyboard(mainArray, workArray, mainCount, workCount); }
-            bool GeneralData::loadFromFile(const std::string& fileName, Models::Talk* mainArray, Models::Talk* workArray, int& mainCount, int& workCount) { return basicOperationsController.loadFromFile(fileName, mainArray, workArray, mainCount, workCount); }
+            void GeneralData::loadFromKeyboard(Models::Talk*& mainArray, Models::Talk*& workArray, int& mainCount, int& workCount) { basicOperationsController.loadFromKeyboard(mainArray, workArray, mainCount, workCount); }
+            bool GeneralData::loadFromFile(const std::string& fileName, Models::Talk*& mainArray, Models::Talk*& workArray, int& mainCount, int& workCount) { return basicOperationsController.loadFromFile(fileName, mainArray, workArray, mainCount, workCount); }
             bool GeneralData::saveToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const { return basicOperationsController.saveToFile(fileName, workArray, workCount); }
             void GeneralData::displayData(const Models::Talk* workArray, int workCount) const { basicOperationsController.displayData(workArray, workCount); }
 
