@@ -84,6 +84,9 @@
     <ClCompile Include="GeneralData.cpp">
       <Filter>Source Files\Controllers\Repos</Filter>
     </ClCompile>
+    <ClCompile Include="DialogController.cpp">
+      <Filter>Source Files\Controllers\Views</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">

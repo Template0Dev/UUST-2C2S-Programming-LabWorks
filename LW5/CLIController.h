@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Talk.h"
-#include "BasicOperationsController.h"
+#include "GeneralData.h"
 
 
 namespace LW5
@@ -14,6 +14,7 @@ namespace LW5
             {
             private:
                 static const int INIT_SIZE = 128;
+                Repos::GeneralData processingRepo;
 
                 int mainCount = 0;
                 Models::Talk* mainArray;

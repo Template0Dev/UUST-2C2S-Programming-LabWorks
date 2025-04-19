@@ -1,7 +1,4 @@
 #include "CLIController.h"
-#include "BasicOperationsController.h"
-#include "GroupingOperationsController.h"
-#include "SearchingOperationsController.h"
 #include "Talk.h"
 #include "Utils.h"
 #include <iostream>
@@ -14,15 +11,18 @@ namespace LW5
 	{
 		namespace Views
 		{
+
 #pragma region Region: Constructors.
 
 			CLIController::CLIController()
 			{
+				processingRepo = Repos::GeneralData();
+
 				mainArray = new Models::Talk[INIT_SIZE];
 				workArray = new Models::Talk[INIT_SIZE];
 			}
 
-			CLIController::CLIController(const CLIController& other) : mainCount(other.mainCount), workCount(other.workCount)
+			CLIController::CLIController(const CLIController& other) : processingRepo(other.processingRepo), mainCount(other.mainCount), workCount(other.workCount)
 			{
 				mainArray = new Models::Talk[mainCount];
 				workArray = new Models::Talk[workCount];
@@ -239,17 +239,17 @@ namespace LW5
 
 			void executeBasicOperation(CLIController& controller, int operation, const std::string& fileName)
 			{
-				Data::BasicOperationsController dataController;
 				switch (operation)
 				{
 					case 1:
 					{
-						dataController.loadFromKeyboard(controller.mainArray, controller.workArray, controller.mainCount, controller.workCount);
+						controller.processingRepo.loadFromKeyboard(controller.mainArray, controller.workArray, controller.mainCount, controller.workCount);
 						break;
 					}
 					case 2:
 					{
-						if (dataController.loadFromFile(fileName, controller.mainArray, controller.workArray, controller.mainCount, controller.workCount))
+						auto result = controller.processingRepo.loadFromFile(fileName, controller.mainArray, controller.workArray, controller.mainCount, controller.workCount);
+						if (result)
 							std::cout << "Данные успешно загружены из файла. Общее количество импортированных записей: " << controller.mainCount << "." << std::endl;
 						else
 							std::cout << "Не удалось загрузить данные." << std::endl;
@@ -258,7 +258,8 @@ namespace LW5
 					}
 					case 3:
 					{
-						if (dataController.saveToFile(fileName, controller.workArray, controller.workCount))
+						auto result = controller.processingRepo.saveToFile(fileName, controller.workArray, controller.workCount);
+						if (result)
 							std::cout << "Удалось сохранить данные в файл." << std::endl;
 						else
 							std::cout << "Ошибка при сохранении файла." << std::endl;
@@ -268,65 +269,45 @@ namespace LW5
 
 					case 6:
 					{
-						dataController.displayData(controller.workArray, controller.workCount);
+						controller.processingRepo.displayData(controller.workArray, controller.workCount);
 						break;
 					}
 					case 7:
 					{
-						dataController.sortByName(controller.workArray, controller.workCount);
+						controller.processingRepo.sortByName(controller.workArray, controller.workCount);
 						std::cout << "Сортировка по ФИО выполнена." << std::endl;
 
 						break;
 					}
 					case 8:
 					{
-						dataController.sortByDate(controller.workArray, controller.workCount);
+						controller.processingRepo.sortByDate(controller.workArray, controller.workCount);
 						std::cout << "Сортировка по дате разговора выполнена." << std::endl;
 
 						break;
 					}
 					case 9:
 					{
-						dataController.sortByDuration(controller.workArray, controller.workCount);
+						controller.processingRepo.sortByDuration(controller.workArray, controller.workCount);
 						std::cout << "Сортировка по длительности разговора выполнена." << std::endl;
 
 						break;
 					}
 					case 10:
 					{
-						dataController.resetWorkingArray(controller.mainArray, controller.workArray, controller.mainCount, controller.workCount);
+						controller.processingRepo.resetWorkingArray(controller.mainArray, controller.workArray, controller.mainCount, controller.workCount);
 						std::cout << "Рабочая копия сброшена к исходной." << std::endl;
 
 						break;
 					}
 					case 100:
 					{
-						auto copiedController = CLIController(controller);
-
-						std::cout << "Текущий объект:" << std::endl;
-						dataController.displayData(controller.workArray, controller.workCount);
-
-						std::cout << std::endl << "Скопированный объект:" << std::endl;
-						dataController.displayData(copiedController.workArray, copiedController.workCount);
-
+						controller.processingRepo.testBasicCopyConstructor(controller.workArray, controller.workCount);
 						break;
 					}
 					case 200:
 					{
-						CLIController newControllerA;
-						CLIController newControllerB;
-
-						newControllerB = newControllerA = controller;
-
-						std::cout << "Текущий объект:" << std::endl;
-						dataController.displayData(controller.workArray, controller.workCount);
-
-						std::cout << std::endl << "Присвоенный объект A:" << std::endl;
-						dataController.displayData(newControllerA.workArray, newControllerA.workCount);
-
-						std::cout << std::endl << "Присвоенный объект B:" << std::endl;
-						dataController.displayData(newControllerB.workArray, newControllerB.workCount);
-
+						controller.processingRepo.testBasicAssignmentOperator(controller.workArray, controller.workCount);
 						break;
 					}
 
@@ -340,9 +321,8 @@ namespace LW5
 
 			void executeGroupingOperation(const CLIController& controller, int operation)
 			{
-				Data::GroupingOperationsController groupingController;
 				int groupCount = 0;
-				auto* groups = groupingController.groupByPhone(controller.workArray, controller.workCount, groupCount);
+				auto* groups = controller.processingRepo.groupByPhone(controller.workArray, controller.workCount, groupCount);
 
 				switch (operation)
 				{
@@ -353,14 +333,14 @@ namespace LW5
 					}
 					case 21:
 					{
-						groupingController.sortByTalkCount(groups, groupCount);
+						controller.processingRepo.sortGroupsByCount(groups, groupCount);
 						std::cout << "Группировка по номеру телефона (сортировка по количеству звонков):" << std::endl;
 
 						break;
 					}
 					case 22:
 					{
-						groupingController.sortByPhoneNumber(groups, groupCount);
+						controller.processingRepo.sortGroupsByPhone(groups, groupCount);
 						std::cout << "Группировка по номеру телефона (сортировка по номеру):" << std::endl;
 
 						break;
@@ -368,22 +348,14 @@ namespace LW5
 
 					case 110:
 					{
-						auto newGroupController = Data::GroupingOperationsController(groupingController);
-
-						int newGroupsCount = 0;
-						auto const* newGroups = newGroupController.groupByPhone(controller.workArray, controller.workCount, newGroupsCount);
-
-						std::cout << std::endl << "Копия контроллера:" << std::endl;
-						newGroupController.printGroupsTable(std::cout, newGroups, newGroupsCount);
-
-						std::cout << std::endl << "Основной контроллер:" << std::endl;
+						controller.processingRepo.testGroupingCopyConstructor(controller.workArray, controller.workCount);
 						break;
 					}
 					case 210:
 					{
 						Data::GroupingOperationsController newGroupingControllerA;
 						Data::GroupingOperationsController newGroupingControllerB;
-						newGroupingControllerB = newGroupingControllerA = groupingController;
+						newGroupingControllerB = newGroupingControllerA = controller.processingRepo.groupingOperationsController;
 
 						int newGroupsCountB = 0;
 						auto const* newGroupsB = newGroupingControllerB.groupByPhone(controller.workArray, controller.workCount, newGroupsCountB);
@@ -406,36 +378,22 @@ namespace LW5
 					}
 				}
 
-				groupingController.printGroupsTable(std::cout, groups, groupCount);
-
-				char confirmation;
-				std::cout << std::endl << "Сохранить результат группировки в файл (Y/N)? ";
-				std::cin >> confirmation;
-				if (confirmation == 'y' || confirmation == 'Y')
-				{
-					std::string fileName;
-					std::cout << "Введите название файла для сохранения: ";
-					std::cin >> fileName;
-
-					auto result = groupingController.saveToFile(fileName, groups, groupCount);
-					if (result)
-						std::cout << "Файл успешно сохранён." << std::endl;
-				}
+				controller.processingRepo.printGroups(std::cout, groups, groupCount);
+				controller.processingRepo.askUserAndSaveGroupsToFile(groups, groupCount);
 
 				delete[] groups;
 			}
 
 			void executeSearchingOperation(CLIController& controller, int operation, const std::string& phoneNumber)
 			{
-				Data::SearchingOperationsController searchingController;
 				int matchCount = 0;
-
-				Models::Talk* matches = searchingController.searchByPhoneNumber(controller.workArray, controller.workCount, phoneNumber, matchCount);
+				Models::Talk* matches = controller.processingRepo.searchByPhone(controller.workArray, controller.workCount, phoneNumber, matchCount);
 				if (matchCount == 0)
 				{
 					std::cout << "Записей с номером " << phoneNumber << " не найдено." << std::endl;
 					return;
 				}
+
 				switch (operation)
 				{
 					case 30:
@@ -445,14 +403,14 @@ namespace LW5
 					}
 					case 31:
 					{
-						searchingController.sortByCallDate(matches, matchCount);
+						controller.processingRepo.sortMatchesByDate(matches, matchCount);
 						std::cout << "Поиск по номеру телефона с сортировкой по дате начала разговора:" << std::endl;
 
 						break;
 					}
 					case 32:
 					{
-						searchingController.sortByCallTime(matches, matchCount);
+						controller.processingRepo.sortMatchesByTime(matches, matchCount);
 						std::cout << "Поиск по номеру телефона с сортировкой по времени начала разговора:" << std::endl;
 
 						break;
@@ -460,36 +418,12 @@ namespace LW5
 
 					case 120:
 					{
-						Data::BasicOperationsController baseController;
-						auto newSearchController = Data::SearchingOperationsController(searchingController);
-
-						int newMatchCount = 0;
-						auto const* newMatches = newSearchController.searchByPhoneNumber(controller.workArray, controller.workCount, phoneNumber, newMatchCount);
-
-						std::cout << std::endl << "Копия контроллера:" << std::endl;
-						baseController.displayData(newMatches, matchCount);
-
-						std::cout << std::endl << "Основной контроллер:" << std::endl;
+						controller.processingRepo.testSearchingCopyConstructor(controller.workArray, controller.workCount, &phoneNumber);
 						break;
 					}
 					case 220:
 					{
-						Data::BasicOperationsController baseController;
-						Data::SearchingOperationsController newSearchControllerA;
-						Data::SearchingOperationsController newSearchControllerB;
-						newSearchControllerB = newSearchControllerA = searchingController;
-
-						int newMatchesCountB = 0;
-						auto const* newMatchesB = newSearchControllerB.searchByPhoneNumber(controller.workArray, controller.workCount, phoneNumber, newMatchesCountB);
-						std::cout << std::endl << "Результат работы переприсвоенного контроллера (B):" << std::endl;
-						baseController.displayData(newMatchesB, newMatchesCountB);
-
-						int newMatchesCountA = 0;
-						auto const* newMatchesA = newSearchControllerA.searchByPhoneNumber(controller.workArray, controller.workCount, phoneNumber, newMatchesCountA);
-						std::cout << std::endl << "Результат работы переприсвоенного контроллера (A):" << std::endl;
-						baseController.displayData(newMatchesA, newMatchesCountA);
-
-						std::cout << std::endl << "Результат работы основного контроллера:" << std::endl;
+						controller.processingRepo.testSearchingAssignmentOperator(controller.workArray, controller.workCount, &phoneNumber);
 						break;
 					}
 
@@ -500,23 +434,10 @@ namespace LW5
 					}
 				}
 
-				Data::BasicOperationsController basicController;
-				basicController.displayData(matches, matchCount);
+				controller.processingRepo.displayMatches(matches, matchCount);
+				controller.processingRepo.askUserAndSaveMatchesToFile(matches, matchCount);
 
 				char confirmation;
-				std::cout << "Сохранить результат поиска в файл (Y/N)? ";
-				std::cin >> confirmation;
-				if (confirmation == 'y' || confirmation == 'Y')
-				{
-					std::string fileName;
-					std::cout << "Введите название файла для сохранения: ";
-					std::cin >> fileName;
-
-					auto result = Data::BasicOperationsController().saveToFile(fileName, matches, matchCount);
-					if (result)
-						std::cout << "Файл успешно сохранён." << std::endl;
-				}
-
 				std::cout << "Перезаписать рабочий массив результатами поиска (Y/N)? ";
 				std::cin >> confirmation;
 				if (confirmation == 'y' || confirmation == 'Y')
@@ -538,7 +459,7 @@ namespace LW5
 			bool CLIController::addNewEntrySubFunction()
 			{
 				Models::Talk newEntry = userGuidedTalkCreation();
-				return Data::BasicOperationsController().addRecord(newEntry, workArray, workCount);
+				return processingRepo.addRecord(workArray, workCount, &newEntry);
 			}
 
 			bool CLIController::removeEntrySubFunction()
@@ -553,7 +474,7 @@ namespace LW5
 				}
 				std::cin.ignore();
 
-				return Data::BasicOperationsController().deleteRecord(index, workArray, workCount);
+				return processingRepo.deleteRecord(workArray, workCount, index);
 			}
 #pragma endregion
 
@@ -566,6 +487,8 @@ namespace LW5
 
 				delete[] mainArray;
 				delete[] workArray;
+
+				processingRepo = other.processingRepo;
 
 				mainCount = other.mainCount;
 				workCount = other.workCount;

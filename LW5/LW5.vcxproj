@@ -130,6 +130,7 @@
     <ClCompile Include="BasicOperationsController.cpp" />
     <ClCompile Include="CLIController.cpp" />
     <ClCompile Include="DateTime.cpp" />
+    <ClCompile Include="DialogController.cpp" />
     <ClCompile Include="GeneralData.cpp" />
     <ClCompile Include="GroupingOperationsController.cpp" />
     <ClCompile Include="Mobile.cpp" />
