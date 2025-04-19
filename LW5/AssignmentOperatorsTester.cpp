@@ -68,10 +68,10 @@ namespace LW5
 				searchingController.displayMatches(newMatchesB, newMatchesCountB);
 			}
 
-			void AssignmentOperatorsTester::testGeneralDataRepositoryAssignmentOperator(const Repos::GeneralData dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
+			void AssignmentOperatorsTester::testGeneralDataRepositoryAssignmentOperator(const Repos::GeneralDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
 			{
-				Repos::GeneralData newRepoA;
-				Repos::GeneralData newRepoB;
+				Repos::GeneralDataRepo newRepoA;
+				Repos::GeneralDataRepo newRepoB;
 				newRepoA = newRepoB = dataRepo;
 
 				// Testing Basic Repo.

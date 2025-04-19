@@ -1,6 +1,6 @@
 #include "CLIController.h"
 #include "DialogController.h"
-#include "CopyControllersTester.h"
+#include "CopyConstructorsTester.h"
 #include "AssignmentOperatorsTester.h"
 #include "Talk.h"
 #include "Utils.h"
@@ -19,7 +19,7 @@ namespace LW5
 
 			CLIController::CLIController()
 			{
-				processingRepo = Repos::GeneralData();
+				processingRepo = Repos::GeneralDataRepo();
 
 				mainArray = new Models::Talk[INIT_SIZE];
 				workArray = new Models::Talk[INIT_SIZE];
@@ -327,7 +327,7 @@ namespace LW5
 					}
 					case 110:
 					{
-						Testers::CopyControllersTester().testBasicOperationsControllerCopyConstructor(controller.processingRepo.basicOperationsController, controller.workArray, controller.workCount);
+						Testers::CopyConstructorsTester().testBasicOperationsControllerCopyConstructor(controller.processingRepo.basicOperationsController, controller.workArray, controller.workCount);
 						break;
 					}
 					case 210:
@@ -373,7 +373,7 @@ namespace LW5
 
 					case 120:
 					{
-						Testers::CopyControllersTester().testGroupingOperationsControllerCopyConstructor(controller.processingRepo.groupingOperationsController, controller.workArray, controller.workCount);
+						Testers::CopyConstructorsTester().testGroupingOperationsControllerCopyConstructor(controller.processingRepo.groupingOperationsController, controller.workArray, controller.workCount);
 						break;
 					}
 					case 220:
@@ -435,7 +435,7 @@ namespace LW5
 
 					case 130:
 					{
-						Testers::CopyControllersTester().testSearchingOperationsControllerCopyConstructor(controller.processingRepo.searchingOperationsController, controller.workArray, controller.workCount, &phoneNumber);
+						Testers::CopyConstructorsTester().testSearchingOperationsControllerCopyConstructor(controller.processingRepo.searchingOperationsController, controller.workArray, controller.workCount, &phoneNumber);
 						break;
 					}
 					case 230:
@@ -480,7 +480,7 @@ namespace LW5
 				{
 					case 100:
 					{
-						Testers::CopyControllersTester().testGeneralDataRepositoryCopyConstructor(controller.processingRepo, controller.workArray, controller.workCount, phoneNumber);
+						Testers::CopyConstructorsTester().testGeneralDataRepositoryCopyConstructor(controller.processingRepo, controller.workArray, controller.workCount, phoneNumber);
 						break;
 					}
 					case 200:

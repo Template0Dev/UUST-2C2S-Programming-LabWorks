@@ -87,16 +87,16 @@
     <ClCompile Include="CLIController.cpp">
       <Filter>Source Files\Controllers\Views</Filter>
     </ClCompile>
-    <ClCompile Include="GeneralData.cpp">
+    <ClCompile Include="GeneralDataRepo.cpp">
       <Filter>Source Files\Controllers\Repos</Filter>
     </ClCompile>
     <ClCompile Include="DialogController.cpp">
       <Filter>Source Files\Controllers\Views</Filter>
     </ClCompile>
-    <ClCompile Include="CopyControllersTester.h">
+    <ClCompile Include="CopyConstructorsTester.h">
       <Filter>Header Files\Controllers\Testers</Filter>
     </ClCompile>
-    <ClCompile Include="CopyControllersTester.cpp">
+    <ClCompile Include="CopyConstructorsTester.cpp">
       <Filter>Source Files\Controllers\Testers</Filter>
     </ClCompile>
     <ClCompile Include="AssignmentOperatorsTester.h">
@@ -134,7 +134,7 @@
     <ClInclude Include="CLIController.h">
       <Filter>Header Files\Controllers\Views</Filter>
     </ClInclude>
-    <ClInclude Include="GeneralData.h">
+    <ClInclude Include="GeneralDataRepo.h">
       <Filter>Header Files\Controllers\Repos</Filter>
     </ClInclude>
     <ClInclude Include="GroupedTalk.h">

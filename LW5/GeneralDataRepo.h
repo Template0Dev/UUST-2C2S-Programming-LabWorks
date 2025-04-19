@@ -11,16 +11,16 @@ namespace LW5
     {
         namespace Repos
         {
-            class GeneralData 
+            class GeneralDataRepo 
             {
                 public:
                     Data::BasicOperationsController basicOperationsController;
                     Data::GroupingOperationsController groupingOperationsController;
                     Data::SearchingOperationsController searchingOperationsController;
 
-                    GeneralData() = default;
-                    GeneralData(const GeneralData& other) = default;
-                    ~GeneralData() = default;
+                    GeneralDataRepo() = default;
+                    GeneralDataRepo(const GeneralDataRepo& other) = default;
+                    ~GeneralDataRepo() = default;
 
                     void loadFromKeyboard(Models::Talk*& mainArray, Models::Talk*& workArray, int& mainCount, int& workCount);
                     bool loadFromFile(const std::string& fileName, Models::Talk*& mainArray, Models::Talk*& workArray, int& mainCount, int& workCount);
@@ -45,7 +45,7 @@ namespace LW5
                     void displayMatches(const Models::Talk* matches, int matchCount) const;
                     bool saveMatchesToFile(const std::string* fileName, const Models::Talk* matches, int matchCount) const;
 
-                    GeneralData& operator=(const GeneralData& other);
+                    GeneralDataRepo& operator=(const GeneralDataRepo& other);
             };
         }
     }

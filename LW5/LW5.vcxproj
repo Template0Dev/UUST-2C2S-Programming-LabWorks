@@ -134,11 +134,11 @@
     <ClCompile Include="AssignmentOperatorsTester.h" />
     <ClCompile Include="BasicOperationsController.cpp" />
     <ClCompile Include="CLIController.cpp" />
-    <ClCompile Include="CopyControllersTester.cpp" />
-    <ClCompile Include="CopyControllersTester.h" />
+    <ClCompile Include="CopyConstructorsTester.cpp" />
+    <ClCompile Include="CopyConstructorsTester.h" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="DialogController.cpp" />
-    <ClCompile Include="GeneralData.cpp" />
+    <ClCompile Include="GeneralDataRepo.cpp" />
     <ClCompile Include="GroupingOperationsController.cpp" />
     <ClCompile Include="Mobile.cpp" />
     <ClCompile Include="Program.cpp" />
@@ -152,7 +152,7 @@
     <ClInclude Include="CLIController.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="DialogController.h" />
-    <ClInclude Include="GeneralData.h" />
+    <ClInclude Include="GeneralDataRepo.h" />
     <ClInclude Include="GroupedTalk.h" />
     <ClInclude Include="GroupingOperationsController.h" />
     <ClInclude Include="Mobile.h" />

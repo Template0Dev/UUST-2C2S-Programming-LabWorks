@@ -1,4 +1,4 @@
-#include "CopyControllersTester.h"
+#include "CopyConstructorsTester.h"
 #include <iostream>
 
 
@@ -8,7 +8,7 @@ namespace LW5
 	{
 		namespace Testers
 		{
-			void CopyControllersTester::testBasicOperationsControllerCopyConstructor(const Data::BasicOperationsController controller, const Models::Talk* workArray, int workCount) const
+			void CopyConstructorsTester::testBasicOperationsControllerCopyConstructor(const Data::BasicOperationsController controller, const Models::Talk* workArray, int workCount) const
 			{
 				std::cout << "Òåêóùèé îáúåêò:" << std::endl;
 				controller.displayData(workArray, workCount);
@@ -17,7 +17,7 @@ namespace LW5
 				Data::BasicOperationsController(controller).displayData(workArray, workCount);
 			}
 
-			void CopyControllersTester::testGroupingOperationsControllerCopyConstructor(const Data::GroupingOperationsController groupingController, const Models::Talk* workArray, int workCount) const
+			void CopyConstructorsTester::testGroupingOperationsControllerCopyConstructor(const Data::GroupingOperationsController groupingController, const Models::Talk* workArray, int workCount) const
 			{
 				int groupsCount = 0;
 				auto const* groups = groupingController.groupByPhone(workArray, workCount, groupsCount);
@@ -33,7 +33,7 @@ namespace LW5
 				newGroupController.printGroupsTable(std::cout, newGroups, newGroupsCount);
 			}
 
-			void CopyControllersTester::testSearchingOperationsControllerCopyConstructor(const Data::SearchingOperationsController searchingController, const Models::Talk* workArray, int workCount, const std::string* phoneNumber) const
+			void CopyConstructorsTester::testSearchingOperationsControllerCopyConstructor(const Data::SearchingOperationsController searchingController, const Models::Talk* workArray, int workCount, const std::string* phoneNumber) const
 			{
 				int matchCount = 0;
 				auto const* matches = searchingController.searchByPhoneNumber(workArray, workCount, *phoneNumber, matchCount);
@@ -49,9 +49,9 @@ namespace LW5
 				searchingController.displayMatches(newMatches, newMatchCount);
 			}
 
-			void CopyControllersTester::testGeneralDataRepositoryCopyConstructor(const Repos::GeneralData dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
+			void CopyConstructorsTester::testGeneralDataRepositoryCopyConstructor(const Repos::GeneralDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
 			{
-				auto const repoCopy = Repos::GeneralData(dataRepo);
+				auto const repoCopy = Repos::GeneralDataRepo(dataRepo);
 
 				// Basic Repo test.
 				std::cout << std::endl << std::endl << "[ ÁÀÇÎÂÛÉ ÐÅÏÎÇÈÒÎÐÈÉ ]" << std::endl;
