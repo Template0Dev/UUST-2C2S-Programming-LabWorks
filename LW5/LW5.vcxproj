@@ -127,8 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssignmentOperatorsTester.cpp" />
+    <ClCompile Include="AssignmentOperatorsTester.h" />
     <ClCompile Include="BasicOperationsController.cpp" />
     <ClCompile Include="CLIController.cpp" />
+    <ClCompile Include="CopyControllersTester.cpp" />
+    <ClCompile Include="CopyControllersTester.h" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="DialogController.cpp" />
     <ClCompile Include="GeneralData.cpp" />
@@ -144,6 +148,7 @@
     <ClInclude Include="BasicOperationsController.h" />
     <ClInclude Include="CLIController.h" />
     <ClInclude Include="DateTime.h" />
+    <ClInclude Include="DialogController.h" />
     <ClInclude Include="GeneralData.h" />
     <ClInclude Include="GroupedTalk.h" />
     <ClInclude Include="GroupingOperationsController.h" />

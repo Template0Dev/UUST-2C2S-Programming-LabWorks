@@ -1,4 +1,7 @@
 #include "CLIController.h"
+#include "DialogController.h"
+#include "CopyControllersTester.h"
+#include "AssignmentOperatorsTester.h"
 #include "Talk.h"
 #include "Utils.h"
 #include <iostream>
@@ -302,12 +305,12 @@ namespace LW5
 					}
 					case 100:
 					{
-						controller.processingRepo.testBasicCopyConstructor(controller.workArray, controller.workCount);
+						Testers::CopyControllersTester().testBasicOperationsControllerCopyConstructor(controller.processingRepo.basicOperationsController, controller.workArray, controller.workCount);
 						break;
 					}
 					case 200:
 					{
-						controller.processingRepo.testBasicAssignmentOperator(controller.workArray, controller.workCount);
+						Testers::AssignmentOperatorsTester().testBasicOperationsControllerAssignmentOperator(controller.processingRepo.basicOperationsController, controller.workArray, controller.workCount);
 						break;
 					}
 
@@ -348,26 +351,12 @@ namespace LW5
 
 					case 110:
 					{
-						controller.processingRepo.testGroupingCopyConstructor(controller.workArray, controller.workCount);
+						Testers::CopyControllersTester().testGroupingOperationsControllerCopyConstructor(controller.processingRepo.groupingOperationsController, controller.workArray, controller.workCount);
 						break;
 					}
 					case 210:
 					{
-						Data::GroupingOperationsController newGroupingControllerA;
-						Data::GroupingOperationsController newGroupingControllerB;
-						newGroupingControllerB = newGroupingControllerA = controller.processingRepo.groupingOperationsController;
-
-						int newGroupsCountB = 0;
-						auto const* newGroupsB = newGroupingControllerB.groupByPhone(controller.workArray, controller.workCount, newGroupsCountB);
-						std::cout << std::endl << "Результат работы переприсвоенного контроллера (B):" << std::endl;
-						newGroupingControllerB.printGroupsTable(std::cout, newGroupsB, newGroupsCountB);
-
-						int newGroupsCountA = 0;
-						auto const* newGroupsA = newGroupingControllerA.groupByPhone(controller.workArray, controller.workCount, newGroupsCountA);
-						std::cout << std::endl << "Результат работы переприсвоенного контроллера (A):" << std::endl;
-						newGroupingControllerA.printGroupsTable(std::cout, newGroupsA, newGroupsCountA);
-
-						std::cout << std::endl << "Результат работы основного контроллера:" << std::endl;
+						Testers::AssignmentOperatorsTester().testGroupingOperationsControllerAssignmentOperator(controller.processingRepo.groupingOperationsController, controller.workArray, controller.workCount);
 						break;
 					}
 
@@ -377,9 +366,15 @@ namespace LW5
 						break;
 					}
 				}
+				// Ignore output part if specified operation is testing, because result was already printed.
+				if (operation != 110 && operation != 210)
+					controller.processingRepo.printGroups(std::cout, groups, groupCount);
 
-				controller.processingRepo.printGroups(std::cout, groups, groupCount);
-				controller.processingRepo.askUserAndSaveGroupsToFile(groups, groupCount);
+				if (DialogController::askConfirmation(std::string("Сохранить результат группировки в файл")))
+				{
+					auto fileName = DialogController::getFileName();
+					controller.processingRepo.saveGroupsToFile(&fileName, groups, groupCount);
+				}
 
 				delete[] groups;
 			}
@@ -418,12 +413,12 @@ namespace LW5
 
 					case 120:
 					{
-						controller.processingRepo.testSearchingCopyConstructor(controller.workArray, controller.workCount, &phoneNumber);
+						Testers::CopyControllersTester().testSearchingOperationsControllerCopyConstructor(controller.processingRepo.searchingOperationsController, controller.workArray, controller.workCount, &phoneNumber);
 						break;
 					}
 					case 220:
 					{
-						controller.processingRepo.testSearchingAssignmentOperator(controller.workArray, controller.workCount, &phoneNumber);
+						Testers::AssignmentOperatorsTester().testSearchingOperationsControllerAssignmentOperator(controller.processingRepo.searchingOperationsController, controller.workArray, controller.workCount, &phoneNumber);
 						break;
 					}
 
@@ -433,14 +428,17 @@ namespace LW5
 						break;
 					}
 				}
+				// Ignore output part if specified operation is testing, because result was already printed.
+				if (operation != 120 && operation != 220)
+					controller.processingRepo.displayMatches(matches, matchCount);
 
-				controller.processingRepo.displayMatches(matches, matchCount);
-				controller.processingRepo.askUserAndSaveMatchesToFile(matches, matchCount);
+				if (DialogController::askConfirmation(std::string("Сохранить результат поиска в файл")))
+				{
+					auto fileName = DialogController::getFileName();
+					controller.processingRepo.saveMatchesToFile(&fileName, matches, matchCount);
+				}
 
-				char confirmation;
-				std::cout << "Перезаписать рабочий массив результатами поиска (Y/N)? ";
-				std::cin >> confirmation;
-				if (confirmation == 'y' || confirmation == 'Y')
+				if (DialogController::askConfirmation(std::string("Перезаписать рабочий массив результатами поиска")))
 				{
 					delete[] controller.workArray;
 

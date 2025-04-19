@@ -34,6 +34,9 @@ namespace LW5
                 void sortByCallDate(Models::Talk* array, int count) const;
                 void sortByCallTime(Models::Talk* array, int count) const;
 
+                void displayMatches(const Models::Talk* workArray, int workCount) const;
+                bool saveMatchesToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const;
+
                 SearchingOperationsController& operator =(const SearchingOperationsController& other);
             };
         }

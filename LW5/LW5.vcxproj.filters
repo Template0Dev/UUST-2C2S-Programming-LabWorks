@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Controllers\Repos">
       <UniqueIdentifier>{226ea967-bf08-4371-bdeb-eacf62763325}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Controllers\Testers">
+      <UniqueIdentifier>{ec696d4c-df6d-44bd-bc27-d687b8732325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\Testers">
+      <UniqueIdentifier>{e5f05a1f-727a-4bfa-8657-b854f5e85bda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -87,6 +93,18 @@
     <ClCompile Include="DialogController.cpp">
       <Filter>Source Files\Controllers\Views</Filter>
     </ClCompile>
+    <ClCompile Include="CopyControllersTester.h">
+      <Filter>Header Files\Controllers\Testers</Filter>
+    </ClCompile>
+    <ClCompile Include="CopyControllersTester.cpp">
+      <Filter>Source Files\Controllers\Testers</Filter>
+    </ClCompile>
+    <ClCompile Include="AssignmentOperatorsTester.h">
+      <Filter>Header Files\Controllers\Testers</Filter>
+    </ClCompile>
+    <ClCompile Include="AssignmentOperatorsTester.cpp">
+      <Filter>Source Files\Controllers\Testers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -121,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="GroupedTalk.h">
       <Filter>Header Files\Models\Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogController.h">
+      <Filter>Header Files\Controllers\Views</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
