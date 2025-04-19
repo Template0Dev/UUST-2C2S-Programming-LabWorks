@@ -150,15 +150,20 @@ namespace LW5
 
 						case 100:
 						{
-							executeBasicOperation(*this, choice, "");
+							executeGeneralOperation(*this, choice);
 							break;
 						}
 						case 110:
 						{
-							executeGroupingOperation(*this, choice);
+							executeBasicOperation(*this, choice, "");
 							break;
 						}
 						case 120:
+						{
+							executeGroupingOperation(*this, choice);
+							break;
+						}
+						case 130:
 						{
 							executeSearchingOperation(*this, choice, getPhoneNumber());
 							break;
@@ -166,15 +171,20 @@ namespace LW5
 
 						case 200:
 						{
-							executeBasicOperation(*this, choice, "");
+							executeGeneralOperation(*this, choice);
 							break;
 						}
 						case 210:
 						{
-							executeGroupingOperation(*this, choice);
+							executeBasicOperation(*this, choice, "");
 							break;
 						}
 						case 220:
+						{
+							executeGroupingOperation(*this, choice);
+							break;
+						}
+						case 230:
 						{
 							executeSearchingOperation(*this, choice, getPhoneNumber());
 							break;
@@ -205,39 +215,51 @@ namespace LW5
 			{
 				std::cout << "Меню:" << std::endl;
 
+				std::cout << std::endl;
 				std::cout << "1. Загрузка данных с клавиатуры" << std::endl;
 				std::cout << "2. Загрузка данных из файла" << std::endl;
 				std::cout << "3. Сохранение обработки в файл" << std::endl;
 
+				std::cout << std::endl;
 				std::cout << "4. Добавление записи" << std::endl;
 				std::cout << "5. Удаление записи" << std::endl;
 				std::cout << "6. Вывод данных на экран" << std::endl;
 
+				std::cout << std::endl;
 				std::cout << "7. Алфавитная сортировка по ФИО (комплексная сортировка с перегрузкой)" << std::endl;
 				std::cout << "8. Сортировка по дате разговора" << std::endl;
 				std::cout << "9. Сортировка по длительности разговора" << std::endl;
 
+				std::cout << std::endl;
 				std::cout << "10. Сброс рабочей копии к исходной" << std::endl;
 
+				std::cout << std::endl;
 				std::cout << "20. Группировка по номеру телефона" << std::endl;
 				std::cout << "21. Группировка по номеру телефона (сортировка по количеству звонков)" << std::endl;
 				std::cout << "22. Группировка по номеру телефона (сортировка по номеру)" << std::endl;
 
+				std::cout << std::endl;
 				std::cout << "30. Поиск по номеру телефона" << std::endl;
 				std::cout << "31. Поиск по номеру телефона (с сортировкой по дате начала разговора)" << std::endl;
 				std::cout << "32. Поиск по номеру телефона (с сортировкой по времени начала разговора)" << std::endl;
 
-				std::cout << "100. Проверка конструктора копирования" << std::endl;
-				std::cout << "110. Проверка конструктора копирования группировки" << std::endl;
-				std::cout << "120. Проверка конструктора копирования поиска" << std::endl;
+				std::cout << std::endl;
+				std::cout << "100. Проверка конструктора копирования общего репозитория данных" << std::endl;
+				std::cout << "110. Проверка конструктора копирования базового контроллера" << std::endl;
+				std::cout << "120. Проверка конструктора копирования контроллера группировки" << std::endl;
+				std::cout << "130. Проверка конструктора копирования контроллера поиска" << std::endl;
 
-				std::cout << "200. Проверка перегрузки присваивания" << std::endl;
-				std::cout << "210. Проверка перегрузки присваивания группировки" << std::endl;
-				std::cout << "220. Проверка перегрузки присваивания поиска" << std::endl;
+				std::cout << std::endl;
+				std::cout << "200. Проверка перегрузки присваивания общего репозитория данных" << std::endl;
+				std::cout << "210. Проверка перегрузки присваивания базового контроллера" << std::endl;
+				std::cout << "220. Проверка перегрузки присваивания контроллера группировки" << std::endl;
+				std::cout << "230. Проверка перегрузки присваивания контроллера поиска" << std::endl;
 
+				std::cout << std::endl;
 				std::cout << "0. Выход" << std::endl;
 
-				std::cout << std::endl << "Выберите действие: ";
+				std::cout << std::endl;
+				std::cout << "Выберите действие: ";
 			}
 
 			void executeBasicOperation(CLIController& controller, int operation, const std::string& fileName)
@@ -303,12 +325,12 @@ namespace LW5
 
 						break;
 					}
-					case 100:
+					case 110:
 					{
 						Testers::CopyControllersTester().testBasicOperationsControllerCopyConstructor(controller.processingRepo.basicOperationsController, controller.workArray, controller.workCount);
 						break;
 					}
-					case 200:
+					case 210:
 					{
 						Testers::AssignmentOperatorsTester().testBasicOperationsControllerAssignmentOperator(controller.processingRepo.basicOperationsController, controller.workArray, controller.workCount);
 						break;
@@ -349,12 +371,12 @@ namespace LW5
 						break;
 					}
 
-					case 110:
+					case 120:
 					{
 						Testers::CopyControllersTester().testGroupingOperationsControllerCopyConstructor(controller.processingRepo.groupingOperationsController, controller.workArray, controller.workCount);
 						break;
 					}
-					case 210:
+					case 220:
 					{
 						Testers::AssignmentOperatorsTester().testGroupingOperationsControllerAssignmentOperator(controller.processingRepo.groupingOperationsController, controller.workArray, controller.workCount);
 						break;
@@ -411,12 +433,12 @@ namespace LW5
 						break;
 					}
 
-					case 120:
+					case 130:
 					{
 						Testers::CopyControllersTester().testSearchingOperationsControllerCopyConstructor(controller.processingRepo.searchingOperationsController, controller.workArray, controller.workCount, &phoneNumber);
 						break;
 					}
-					case 220:
+					case 230:
 					{
 						Testers::AssignmentOperatorsTester().testSearchingOperationsControllerAssignmentOperator(controller.processingRepo.searchingOperationsController, controller.workArray, controller.workCount, &phoneNumber);
 						break;
@@ -450,6 +472,30 @@ namespace LW5
 					delete[] matches;
 				}
 			}
+
+			void executeGeneralOperation(const CLIController& controller, int operation)
+			{
+				auto phoneNumber = DialogController::getString(std::string("Введите номер телефона для поиска"));
+				switch (operation)
+				{
+					case 100:
+					{
+						Testers::CopyControllersTester().testGeneralDataRepositoryCopyConstructor(controller.processingRepo, controller.workArray, controller.workCount, phoneNumber);
+						break;
+					}
+					case 200:
+					{
+						Testers::AssignmentOperatorsTester().testGeneralDataRepositoryAssignmentOperator(controller.processingRepo, controller.workArray, controller.workCount, phoneNumber);
+						break;
+					}
+
+					default:
+					{
+						std::cout << "Выбрана неправильная операция." << std::endl;
+						break;
+					}
+				}
+			}
 #pragma endregion
 
 #pragma region Region: Additional Functions.
@@ -457,7 +503,7 @@ namespace LW5
 			bool CLIController::addNewEntrySubFunction()
 			{
 				Models::Talk newEntry = userGuidedTalkCreation();
-				return processingRepo.addRecord(workArray, workCount, &newEntry);
+				return processingRepo.addRecord(workArray, workCount, newEntry);
 			}
 
 			bool CLIController::removeEntrySubFunction()

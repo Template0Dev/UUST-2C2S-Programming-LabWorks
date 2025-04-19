@@ -19,14 +19,16 @@ namespace LW5
 				return false;
 			}
 
-			std::string DialogController::getFileName()
+			std::string DialogController::getString(const std::string& requestMessage)
 			{
-				std::string fileName;
-				std::cout << "Введите название файла для сохранения: ";
-				std::cin >> fileName;
+				std::string result;
+				std::cout << requestMessage << ": ";
+				std::cin >> result;
 
-				return fileName;
+				return result;
 			}
+
+			std::string DialogController::getFileName() { return getString(std::string("Введите название файла")); }
 		}
 	}
 }

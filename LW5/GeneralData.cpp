@@ -14,7 +14,7 @@ namespace LW5
             bool GeneralData::saveToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const { return basicOperationsController.saveToFile(fileName, workArray, workCount); }
             void GeneralData::displayData(const Models::Talk* workArray, int workCount) const { basicOperationsController.displayData(workArray, workCount); }
 
-            bool GeneralData::addRecord(Models::Talk* workArray, int workCount, const Models::Talk* newEntry) const { return basicOperationsController.addRecord(*newEntry, workArray, workCount); }
+            bool GeneralData::addRecord(Models::Talk*& array, int& count, const Models::Talk& newRecord) const { return basicOperationsController.addRecord(newRecord, array, count); }
             bool GeneralData::deleteRecord(Models::Talk*& workArray, int& workCount, int index) const { return basicOperationsController.deleteRecord(index, workArray, workCount); }
 
             void GeneralData::sortByName(Models::Talk* workArray, int workCount) const { basicOperationsController.sortByName(workArray, workCount); }

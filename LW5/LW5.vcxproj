@@ -162,6 +162,8 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Test-Group.txt" />
+    <Text Include="Test-Search.txt" />
     <Text Include="Test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

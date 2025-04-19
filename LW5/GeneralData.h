@@ -26,7 +26,7 @@ namespace LW5
                     bool loadFromFile(const std::string& fileName, Models::Talk*& mainArray, Models::Talk*& workArray, int& mainCount, int& workCount);
                     bool saveToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const;
                     void displayData(const Models::Talk* workArray, int workCount) const;
-                    bool addRecord(Models::Talk* workArray, int workCount, const Models::Talk* newEntry) const;
+                    bool addRecord(Models::Talk*& array, int& count, const Models::Talk& newRecord) const;
                     bool deleteRecord(Models::Talk*& workArray, int& workCount, int index) const;
                     void sortByName(Models::Talk* workArray, int workCount) const;
                     void sortByDate(Models::Talk* workArray, int workCount) const;

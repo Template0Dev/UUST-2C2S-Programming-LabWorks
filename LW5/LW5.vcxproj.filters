@@ -148,5 +148,11 @@
     <Text Include="Test.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Test-Group.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Test-Search.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
