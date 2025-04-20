@@ -178,11 +178,66 @@ void executeSearch(RequestDistributor& dist) {
     cin >> choice;
 
     switch (choice) {
-        case 1: sops.searchByFilename(); break;
-        case 2: sops.searchByFilename(); sops.sortByDate(); break;
-        case 3: sops.searchByFilename(); sops.sortByTime(); break;
+        case 1: {
+            sops.searchByFilename();
+            sops.printSearchResults(cout);
+            
+            break;
+        }
+        case 2: {
+            sops.searchByFilename();
+            sops.sortByDate();
 
-        default: cout << "Неверный выбор.\n"; break;
+            sops.printSearchResults(cout);
+            
+            break;
+        }
+        case 3: {
+            sops.searchByFilename(); 
+            sops.sortByTime();
+
+            sops.printSearchResults(cout);
+            
+            break;
+        }
+        case 4: {
+            sops.searchByFilename();
+
+            cout << "Текущий объект:\n";
+            sops.printSearchResults(cout);
+
+            cout << "\nКопия объекта:\n";
+            SearchOps(sops).printSearchResults(cout);
+
+            break;
+        }
+        case 5: {
+            sops.searchByFilename();
+
+            SearchOps sopsB = sops;
+            SearchOps sopsA = sops;
+            sopsB = sopsA = sops;
+
+            cout << "Копия B:\n";
+            sopsB.printSearchResults(cout);
+
+            cout << "\nКопия A:\n";
+            sopsA.printSearchResults(cout);
+
+            cout << "\nОснова:\n";
+            sops.printSearchResults(cout);
+
+            break;
+        }
+
+
+        default: {
+            cout << "Неверный выбор.\n"; 
+            cin.clear();
+            cin.ignore('\n', 1000);
+
+            break;
+        }
     }
 
     char confirmation;

@@ -5,13 +5,8 @@
 
 using namespace std;
 
-GroupingOps::GroupingOps(RECORD*& recs, int& count)
-    : records(recs), record_count(count), groups(nullptr), group_count(0) {
-}
-
-GroupingOps::GroupingOps(const GroupingOps& other)
-    : records(other.records), record_count(other.record_count), group_count(other.group_count)
-{
+GroupingOps::GroupingOps(RECORD*& recs, int& count) : records(recs), record_count(count), groups(nullptr), group_count(0) { }
+GroupingOps::GroupingOps(const GroupingOps& other) : records(other.records), record_count(other.record_count), group_count(other.group_count) {
     groups = new EXTENSIONGROUP[group_count];
     for (int i = 0; i < group_count; ++i) {
         groups[i] = other.groups[i];
@@ -43,7 +38,7 @@ void GroupingOps::getUniqueExtensions() {
 }
 
 void GroupingOps::groupByExtension() {
-    getUniqueExtensions(); // now stores in groups[]
+    getUniqueExtensions();
 }
 
 void GroupingOps::printGrouped(ostream& out) {
@@ -101,7 +96,6 @@ GroupingOps& GroupingOps::operator=(const GroupingOps& other) {
     records = other.records;
     record_count = other.record_count;
     group_count = other.group_count;
-
     groups = new EXTENSIONGROUP[group_count];
     for (int i = 0; i < group_count; ++i) {
         groups[i] = other.groups[i];

@@ -3,48 +3,86 @@
 #include "basic_operations.h"
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <iomanip>
 
 using namespace std;
 
-SearchOps::SearchOps(RECORD*& recordsRef, int& countRef) : records(recordsRef), record_count(countRef) {}
+SearchOps::SearchOps(RECORD*& recordsRef, int& countRef) : record_count(countRef), records(recordsRef), search_count(0), search_results(nullptr) {}
+SearchOps::SearchOps(const SearchOps& other) : record_count(other.record_count), records(other.records),  search_count(other.search_count), search_results(other.search_results) {
+    search_results = new RECORD[search_count];
+    for (int i = 0; i < search_count; ++i) {
+        search_results[i] = other.search_results[i];
+    }
+}
+SearchOps::~SearchOps() {
+    delete[] search_results;
+}
 
 void SearchOps::searchByFilename() {
     string target;
     cout << "Введите имя файла для поиска: ";
     cin >> target;
 
-    RECORD* results = new RECORD[record_count];
-    int found = 0;
+    search_results = new RECORD[record_count];
+    search_count = 0;
 
     for (int i = 0; i < record_count; ++i) {
         if (records[i].file.filename.find(target) == 0) {
-            results[found++] = records[i];
+            auto cr = records[i];
+            auto newRecord = new RECORD;
+            newRecord->attributes = cr.attributes;
+            newRecord->creation_date = cr.creation_date;
+            newRecord->creation_time = cr.creation_time;
+            newRecord->file = cr.file;
+
+            search_results[search_count++] = *newRecord;
         }
     }
 
-    if (found == 0) {
+    if (search_count == 0) {
         cout << "Файлы с указанным именем не найдены." << endl;
-        delete[] results;
+        delete[] search_results;
+        search_results = nullptr;
         return;
     }
-    else {
-        cout << "Результаты поиска:\n";
-        BasicOps(results, found).displayRecords();
+}
+
+void SearchOps::printSearchResults(ostream& out) {
+    if (!search_results || search_count == 0) {
+        out << "Нет доступных результатов для отображения.\n";
+        return;
     }
 
+    BasicOps(search_results, search_count).displayRecords();
+}
+
+void SearchOps::saveSearchResultsToFile() {
+    if (!search_results || search_count == 0) {
+        cout << "Нет результатов для сохранения.\n";
+        return;
+    }
+
+    BasicOps(search_results, search_count).saveToFile();
+}
+
+void SearchOps::replaceRecordsWithSearchResult()
+{
     char confirmation;
     cout << "Заменить текущие записи результатами поиска (Y/N)? ";
     cin >> confirmation;
     if (confirmation == 'Y' || confirmation == 'y') {
         delete[] records;
-
-        records = results;
-        record_count = found;
+        records = new RECORD[search_count];
+        for (int i = 0; i < search_count; ++i)
+            records[i] = search_results[i];
+        record_count = search_count;
 
         cout << "Результаты поиска были установлены как текущие записи." << endl;
-    }
-    else {
-        delete[] results;
+
+        delete[] search_results;
+        search_results = nullptr;
+        search_count = 0;
     }
 }
 
@@ -74,11 +112,7 @@ void SearchOps::sortByTime() {
     cout << "Сортировка по времени завершена." << endl;
 }
 
-void SearchOps::saveSearchResultsToFile() {
-    BasicOps(records, record_count).saveToFile();
-}
-
-// === Friend Access Points ===
+#pragma region Область: Дружественные функции.
 
 void executeSearchByFilename(RequestDistributor& distributor) {
     SearchOps search(distributor.records, distributor.record_count);
@@ -98,4 +132,19 @@ void executeSortByTime(RequestDistributor& distributor) {
 void executeSaveSearchResults(RequestDistributor& distributor) {
     SearchOps search(distributor.records, distributor.record_count);
     search.saveSearchResultsToFile();
+}
+#pragma endregion
+
+SearchOps& SearchOps::operator=(const SearchOps& other) {
+    if (this == &other) return *this;
+
+    records = other.records;
+    record_count = other.record_count;
+    search_count = other.search_count;
+    search_results = new RECORD[search_count];
+    for (int i = 0; i < search_count; ++i) {
+        search_results[i] = other.search_results[i];
+    }
+
+    return *this;
 }

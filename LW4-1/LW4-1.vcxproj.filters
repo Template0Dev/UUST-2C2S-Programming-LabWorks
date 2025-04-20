@@ -16,9 +16,6 @@
     <Filter Include="Header Files\models">
       <UniqueIdentifier>{08a2419f-7e20-49c7-80f5-9146f0d4d33c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\models">
-      <UniqueIdentifier>{b2a3d79a-37a3-4a24-a6ea-0cb9d943ddbb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\controllers">
       <UniqueIdentifier>{11e4697d-5792-4e2f-b275-d5c4b35655be}</UniqueIdentifier>
     </Filter>
