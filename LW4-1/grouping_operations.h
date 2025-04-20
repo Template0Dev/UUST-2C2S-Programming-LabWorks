@@ -17,7 +17,6 @@ public:
     void sortByExtensionFrequency();
     void saveGroupedToFile();
     friend void executeGroup(class RequestDistributor&);
-    void printGroupMenu();
 };
 
 #endif

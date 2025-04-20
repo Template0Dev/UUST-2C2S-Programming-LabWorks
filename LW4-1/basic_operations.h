@@ -22,6 +22,7 @@ private:
 public:
     BasicOps(RECORD*& r, int& rc);
     BasicOps(const BasicOps& other);
+    ~BasicOps();
 
     void loadFromFile();
     void saveToFile();

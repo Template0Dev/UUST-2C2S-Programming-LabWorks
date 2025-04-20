@@ -16,4 +16,10 @@ struct RECORD {
     std::string attributes;
 };
 
+class EXTENSIONGROUP {
+public:
+    std::string extension;
+    int count;
+};
+
 #endif

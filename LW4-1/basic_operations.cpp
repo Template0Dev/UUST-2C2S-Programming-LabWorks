@@ -18,6 +18,9 @@ BasicOps::BasicOps(const BasicOps& other)
         record_count = 0;
     }
 }
+BasicOps::~BasicOps() {
+    delete[] records;
+}
 
 void BasicOps::resize() {
     capacity *= 2;
@@ -201,9 +204,6 @@ void BasicOps::sortAlphabetically() {
 
 BasicOps& BasicOps::operator=(const BasicOps& other) {
     if (this != &other) {
-        // Delete old data
-        delete[] records;
-
         capacity = other.capacity;
         record_count = other.record_count;
 

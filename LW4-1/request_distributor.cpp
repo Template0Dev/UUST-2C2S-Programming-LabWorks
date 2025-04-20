@@ -52,6 +52,33 @@ void executeOperation(RequestDistributor& dist) {
         case 5: bops.displayRecords(); break;
         case 6: bops.sortByAttribute(); break;
         case 7: bops.sortAlphabetically(); break;
+        case 8: {
+            cout << "Текущий объект:\n";
+            bops.displayRecords();
+
+            cout << "\nКопия объекта:\n";
+            BasicOps(bops).displayRecords();
+
+            break;
+        }
+        case 9: {
+            // BasicOps не имеет стандартного конструктора, поэтому инициализацию необходимо проводить при объявлении.
+            BasicOps bopsB = bops;
+            BasicOps bopsA = bops;
+            // А это специально для Хасанова, потому что он требует подобную строчку кода.
+            bopsB = bopsA = bops;
+
+            cout << "Копия B:\n";
+            bopsB.displayRecords();
+
+            cout << "\nКопия A:\n";
+            bopsA.displayRecords();
+
+            cout << "\nОснова:\n";
+            bops.displayRecords();
+
+            break;
+        }
 
         default: std::cout << "Неизвестная операция.\n"; break;
     }
@@ -81,6 +108,17 @@ void executeGroup(RequestDistributor& dist) {
     switch (choice) {
         case 1: gops.groupByExtension(); break;
         case 2: gops.groupByExtension(); gops.sortByExtensionFrequency(); break;
+        case 3: {
+            gops.groupByExtension();
+
+            cout << "Текущий объект:\n";
+            gops.printGroupMenu();
+
+            break;
+        }
+        case 4: {
+            break;
+        }
 
         default: cout << "Неверный выбор.\n"; break;
     }
@@ -94,10 +132,10 @@ void executeGroup(RequestDistributor& dist) {
 }
 
 void RequestDistributor::printGroupMenu() const {
-    cout << "1. Группировать по расширению\n";
-    cout << "2. Группировать и  сортировать по частоте расширений\n";
-    cout << "3. Проверка конструктора копирования\n";
-    cout << "4. Проверка оператора присваивания\n";
+    cout << "1. Простая группировка по расширению\n";
+    cout << "2. Группировать и сортировать по частоте расширений\n";
+    cout << "3. Проверка конструктора копирования (простая группировка)\n";
+    cout << "4. Проверка оператора присваивания (простая группировка)\n";
 
     cout << "\nВыбор: ";
 }
