@@ -2,149 +2,160 @@
 #include "request_distributor.h"
 #include "basic_operations.h"
 #include <iostream>
-#include <string>
 #include <fstream>
-#include <iomanip>
 
 using namespace std;
 
-SearchOps::SearchOps(RECORD*& recordsRef, int& countRef) : record_count(countRef), records(recordsRef), search_count(0), search_results(nullptr) {}
-SearchOps::SearchOps(const SearchOps& other) : record_count(other.record_count), records(other.records),  search_count(other.search_count), search_results(other.search_results) {
-    search_results = new RECORD[search_count];
-    for (int i = 0; i < search_count; ++i) {
-        search_results[i] = other.search_results[i];
-    }
+SearchOps::SearchOps(RECORD*& recordsRef, int& countRef)
+	: records(recordsRef), record_count(countRef), search_results(nullptr), search_count(0) {
 }
+
 SearchOps::~SearchOps() {
-    delete[] search_results;
+	clearResults();
+}
+
+SearchOps::SearchOps(const SearchOps& other)
+	: records(other.records), record_count(other.record_count), search_results(nullptr), search_count(other.search_count) {
+	if (other.search_count > 0 && other.search_results) {
+		search_results = new SEARCHRESULT[search_count];
+		for (int i = 0; i < search_count; ++i) {
+			search_results[i] = other.search_results[i];
+		}
+	}
+}
+
+void SearchOps::clearResults() {
+	delete[] search_results;
+	search_results = nullptr;
+	search_count = 0;
 }
 
 void SearchOps::searchByFilename() {
-    string target;
-    cout << "Введите имя файла для поиска: ";
-    cin >> target;
+	string target;
+	cout << "Введите имя файла для поиска: ";
+	cin >> target;
 
-    search_results = new RECORD[record_count];
-    search_count = 0;
+	SEARCHRESULT* temp = new SEARCHRESULT[record_count];
+	int found = 0;
 
-    for (int i = 0; i < record_count; ++i) {
-        if (records[i].file.filename.find(target) == 0) {
-            auto cr = records[i];
-            auto newRecord = new RECORD;
-            newRecord->attributes = cr.attributes;
-            newRecord->creation_date = cr.creation_date;
-            newRecord->creation_time = cr.creation_time;
-            newRecord->file = cr.file;
+	for (int i = 0; i < record_count; ++i) {
+		if (records[i].file.filename.find(target) == 0) {
+			temp[found++] = SEARCHRESULT(
+				records[i].file.filename,
+				records[i].file.extension,
+				records[i].file.directory,
+				records[i].creation_date,
+				records[i].creation_time
+			);
+		}
+	}
 
-            search_results[search_count++] = *newRecord;
-        }
-    }
+	if (found == 0) {
+		cout << "Файлы с указанным именем не найдены.\n";
+		delete[] temp;
+		return;
+	}
 
-    if (search_count == 0) {
-        cout << "Файлы с указанным именем не найдены." << endl;
-        delete[] search_results;
-        search_results = nullptr;
-        return;
-    }
-}
-
-void SearchOps::printSearchResults(ostream& out) {
-    if (!search_results || search_count == 0) {
-        out << "Нет доступных результатов для отображения.\n";
-        return;
-    }
-
-    BasicOps(search_results, search_count).displayRecords();
-}
-
-void SearchOps::saveSearchResultsToFile() {
-    if (!search_results || search_count == 0) {
-        cout << "Нет результатов для сохранения.\n";
-        return;
-    }
-
-    BasicOps(search_results, search_count).saveToFile();
-}
-
-void SearchOps::replaceRecordsWithSearchResult()
-{
-    char confirmation;
-    cout << "Заменить текущие записи результатами поиска (Y/N)? ";
-    cin >> confirmation;
-    if (confirmation == 'Y' || confirmation == 'y') {
-        delete[] records;
-        records = new RECORD[search_count];
-        for (int i = 0; i < search_count; ++i)
-            records[i] = search_results[i];
-        record_count = search_count;
-
-        cout << "Результаты поиска были установлены как текущие записи." << endl;
-
-        delete[] search_results;
-        search_results = nullptr;
-        search_count = 0;
-    }
+	clearResults();
+	search_results = temp;
+	search_count = found;
 }
 
 void SearchOps::sortByDate() {
-    for (int i = 0; i < record_count - 1; ++i) {
-        for (int j = i + 1; j < record_count; ++j) {
-            if (records[i].creation_date > records[j].creation_date) {
-                RECORD temp = records[i];
-                records[i] = records[j];
-                records[j] = temp;
-            }
-        }
-    }
-    cout << "Сортировка по дате завершена." << endl;
+	sortResultsByDate();
+	cout << "Сортировка результатов поиска по дате завершена.\n";
+}
+
+void SearchOps::sortResultsByDate() {
+	for (int i = 0; i < search_count - 1; ++i) {
+		for (int j = i + 1; j < search_count; ++j) {
+			if (search_results[i].creation_date > search_results[j].creation_date) {
+				SEARCHRESULT temp = search_results[i];
+				search_results[i] = search_results[j];
+				search_results[j] = temp;
+			}
+		}
+	}
 }
 
 void SearchOps::sortByTime() {
-    for (int i = 0; i < record_count - 1; ++i) {
-        for (int j = i + 1; j < record_count; ++j) {
-            if (records[i].creation_time > records[j].creation_time) {
-                RECORD temp = records[i];
-                records[i] = records[j];
-                records[j] = temp;
-            }
-        }
-    }
-    cout << "Сортировка по времени завершена." << endl;
+	sortResultsByTime();
+	cout << "Сортировка результатов поиска по времени завершена.\n";
 }
 
-#pragma region Область: Дружественные функции.
-
-void executeSearchByFilename(RequestDistributor& distributor) {
-    SearchOps search(distributor.records, distributor.record_count);
-    search.searchByFilename();
+void SearchOps::sortResultsByTime() {
+	for (int i = 0; i < search_count - 1; ++i) {
+		for (int j = i + 1; j < search_count; ++j) {
+			if (search_results[i].creation_time > search_results[j].creation_time) {
+				SEARCHRESULT temp = search_results[i];
+				search_results[i] = search_results[j];
+				search_results[j] = temp;
+			}
+		}
+	}
 }
 
-void executeSortByDate(RequestDistributor& distributor) {
-    SearchOps search(distributor.records, distributor.record_count);
-    search.sortByDate();
+void SearchOps::replaceCurrentArrayWithSearchResults()
+{
+	delete[] records;
+	records = new RECORD[search_count];
+	for (int i = 0; i < search_count; ++i) {
+		records[i].file.filename = search_results[i].filename;
+		records[i].file.extension = search_results[i].extension;
+		records[i].file.directory = search_results[i].path;
+		records[i].creation_date = search_results[i].creation_date;
+		records[i].creation_time = search_results[i].creation_time;
+	}
+	record_count = search_count;
+	cout << "Результаты поиска были установлены как текущие записи.\n";
 }
 
-void executeSortByTime(RequestDistributor& distributor) {
-    SearchOps search(distributor.records, distributor.record_count);
-    search.sortByTime();
+void SearchOps::printResults(ostream& os) const {
+	os << "+-------------------------+-----------+----------------------------+------------+----------+\n";
+	os << "| Имя файла               | Расшир.   | Путь                       | Дата       | Время    |\n";
+	os << "+-------------------------+-----------+----------------------------+------------+----------+\n";
+	for (int i = 0; i < search_count; ++i) {
+		os << "| " << setw(24) << left << search_results[i].filename
+			<< "| " << setw(9) << left << search_results[i].extension
+			<< "| " << setw(27) << left << search_results[i].path
+			<< "| " << setw(10) << left << search_results[i].creation_date
+			<< "| " << setw(8) << left << search_results[i].creation_time << "|\n";
+	}
+	os << "+-------------------------+-----------+----------------------------+------------+----------+\n";
 }
 
-void executeSaveSearchResults(RequestDistributor& distributor) {
-    SearchOps search(distributor.records, distributor.record_count);
-    search.saveSearchResultsToFile();
+void SearchOps::saveSearchResultsToFile() const {
+	string filename;
+	cout << "Введите имя файла для сохранения результатов поиска: ";
+	cin >> filename;
+
+	ofstream out(filename);
+	if (!out.is_open()) {
+		cout << "Ошибка открытия файла.\n";
+		return;
+	}
+
+	printResults(out);
+	out.close();
+
+	cout << "Результаты поиска сохранены в файл: " << filename << endl;
 }
-#pragma endregion
 
 SearchOps& SearchOps::operator=(const SearchOps& other) {
-    if (this == &other) return *this;
+	if (this == &other) return *this;
 
-    records = other.records;
-    record_count = other.record_count;
-    search_count = other.search_count;
-    search_results = new RECORD[search_count];
-    for (int i = 0; i < search_count; ++i) {
-        search_results[i] = other.search_results[i];
-    }
+	clearResults();
 
-    return *this;
+	records = other.records;
+	record_count = other.record_count;
+	search_count = other.search_count;
+
+	if (search_count > 0 && other.search_results) {
+		search_results = new SEARCHRESULT[search_count];
+		for (int i = 0; i < search_count; ++i) {
+			search_results[i] = other.search_results[i];
+		}
+	}
+
+	return *this;
 }

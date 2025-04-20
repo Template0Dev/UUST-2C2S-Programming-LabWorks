@@ -180,7 +180,7 @@ void executeSearch(RequestDistributor& dist) {
     switch (choice) {
         case 1: {
             sops.searchByFilename();
-            sops.printSearchResults(cout);
+            sops.printResults(cout);
             
             break;
         }
@@ -188,7 +188,7 @@ void executeSearch(RequestDistributor& dist) {
             sops.searchByFilename();
             sops.sortByDate();
 
-            sops.printSearchResults(cout);
+            sops.printResults(cout);
             
             break;
         }
@@ -196,7 +196,7 @@ void executeSearch(RequestDistributor& dist) {
             sops.searchByFilename(); 
             sops.sortByTime();
 
-            sops.printSearchResults(cout);
+            sops.printResults(cout);
             
             break;
         }
@@ -204,10 +204,10 @@ void executeSearch(RequestDistributor& dist) {
             sops.searchByFilename();
 
             cout << "Текущий объект:\n";
-            sops.printSearchResults(cout);
+            sops.printResults(cout);
 
             cout << "\nКопия объекта:\n";
-            SearchOps(sops).printSearchResults(cout);
+            SearchOps(sops).printResults(cout);
 
             break;
         }
@@ -219,13 +219,13 @@ void executeSearch(RequestDistributor& dist) {
             sopsB = sopsA = sops;
 
             cout << "Копия B:\n";
-            sopsB.printSearchResults(cout);
+            sopsB.printResults(cout);
 
             cout << "\nКопия A:\n";
-            sopsA.printSearchResults(cout);
+            sopsA.printResults(cout);
 
             cout << "\nОснова:\n";
-            sops.printSearchResults(cout);
+            sops.printResults(cout);
 
             break;
         }
@@ -241,6 +241,12 @@ void executeSearch(RequestDistributor& dist) {
     }
 
     char confirmation;
+    cout << "Перезаписать рабочий массив результатами поиска (Y/N)? ";
+    cin >> confirmation;
+    if (confirmation == 'Y' || confirmation == 'y') {
+        sops.replaceCurrentArrayWithSearchResults();
+    }
+
     cout << "Сохранить в файл (Y/N)? ";
     cin >> confirmation;
     if (confirmation == 'Y' || confirmation == 'y') {

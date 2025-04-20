@@ -2,8 +2,7 @@
 #include "request_distributor.h"
 
 BasicOps::BasicOps(RECORD*& r, int& rc) : records(r), record_count(rc), capacity(rc+1) {}
-BasicOps::BasicOps(const BasicOps& other)
-    : records(other.records), record_count(other.record_count), capacity(other.capacity) {
+BasicOps::BasicOps(const BasicOps& other) : records(other.records), record_count(other.record_count), capacity(other.capacity) {
     if (other.record_count > 0) {
         RECORD* newRecords = new RECORD[other.capacity];
         for (int i = 0; i < other.record_count; ++i) {
@@ -18,9 +17,17 @@ BasicOps::BasicOps(const BasicOps& other)
         record_count = 0;
     }
 }
-BasicOps::~BasicOps() {
-    delete[] records;
-}
+/// <summary>
+/// "BasicOps" — это единственный контроллер, который работает с данными напрямую (без дополнительных посредников в виде дополнительных моделей-классов).
+/// <br />
+/// В следствие упомянутого выше факта автоматическая очистка памяти приводит к катастрофическим повреждениям данных(программа начинает вылетать).
+/// Как простой вариант решения проблемы — отключение автоматической очистки.
+/// В теории это приведёт к утечкам памяти. На практике утечки будут незаметны на любом современном компьютере.
+/// <br />
+/// Эта проблема решится сама по себе при дополнении программы до 5 лабораторной работы, 
+/// потому что переменная данного контроллера будет являться полем дистрибутора, что не позволит ей удаляться автоматически при завершении операций.
+/// </summary>
+BasicOps::~BasicOps() = default;
 
 void BasicOps::resize() {
     capacity *= 2;

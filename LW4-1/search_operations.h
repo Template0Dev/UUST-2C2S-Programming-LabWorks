@@ -2,37 +2,36 @@
 #define SEARCH_OPERATIONS_H
 
 #include "file_structs.h"
-#include <ostream>
 
 class SearchOps {
 private:
-    int& record_count;
     RECORD*& records;
+    int& record_count;
 
+    SEARCHRESULT* search_results;
     int search_count;
-    RECORD* search_results;
 
     friend class RequestDistributor;
 
 public:
     SearchOps(RECORD*& recordsRef, int& countRef);
-    SearchOps(const SearchOps& other);
     ~SearchOps();
+    SearchOps(const SearchOps& other);
+    SearchOps& operator=(const SearchOps& other);
 
     void searchByFilename();
-    void replaceRecordsWithSearchResult();
-    void printSearchResults(std::ostream& out);
-    void saveSearchResultsToFile();
-
     void sortByDate();
     void sortByTime();
+    void replaceCurrentArrayWithSearchResults();
 
-    friend void executeSearchByFilename(RequestDistributor& distributor);
-    friend void executeSortByDate(RequestDistributor& distributor);
-    friend void executeSortByTime(RequestDistributor& distributor);
-    friend void executeSaveSearchResults(RequestDistributor& distributor);
+    void printResults(std::ostream& os) const;
+    void saveSearchResultsToFile() const;
 
-    SearchOps& operator=(const SearchOps& other);
+private:
+    void clearResults();
+
+    void sortResultsByDate();
+    void sortResultsByTime();
 };
 
 #endif
