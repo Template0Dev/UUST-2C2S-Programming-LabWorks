@@ -6,7 +6,7 @@
 
 using namespace std;
 
-RequestDistributor::RequestDistributor() : record_count(1), records(new RECORD[record_count]) {}
+RequestDistributor::RequestDistributor() : record_count(0), records(new RECORD[record_count+1]) {}
 
 RequestDistributor::~RequestDistributor() {
     delete[] records;
@@ -24,8 +24,7 @@ void RequestDistributor::loadMockData() {
 }
 
 void RequestDistributor::getRequest(int choice) {
-    switch (choice)
-    {
+    switch (choice) {
         case 1:
             executeOperation(*this); break;
         case 2:
@@ -58,8 +57,7 @@ void executeOperation(RequestDistributor& dist) {
     }
 }
 
-void RequestDistributor::printBasicMenu() const
-{
+void RequestDistributor::printBasicMenu() const {
     cout << "1. Загрузить из файла\n";
     cout << "2. Сохранить в файл\n";
     cout << "3. Добавить запись\n";
@@ -67,6 +65,9 @@ void RequestDistributor::printBasicMenu() const
     cout << "5. Вывести записи\n";
     cout << "6. Отсортировать по атрибутам\n";
     cout << "7. Отсортировать по алфавиту\n";
+    cout << "8. Проверка конструктора копирования\n";
+    cout << "9. Проверка оператора присваивания\n";
+
     cout << "\nВыбор: ";
 }
 
@@ -92,10 +93,12 @@ void executeGroup(RequestDistributor& dist) {
     }
 }
 
-void RequestDistributor::printGroupMenu() const
-{
+void RequestDistributor::printGroupMenu() const {
     cout << "1. Группировать по расширению\n";
     cout << "2. Группировать и  сортировать по частоте расширений\n";
+    cout << "3. Проверка конструктора копирования\n";
+    cout << "4. Проверка оператора присваивания\n";
+
     cout << "\nВыбор: ";
 }
 
@@ -122,10 +125,12 @@ void executeSearch(RequestDistributor& dist) {
     }
 }
 
-void RequestDistributor::printSearchMenu() const
-{
+void RequestDistributor::printSearchMenu() const {
     cout << "1. Поиск по названию\n";
     cout << "2. Поиск и сортировка по дате создания\n";
     cout << "3. Поиск и сортировка по времени создания\n";
+    cout << "4. Проверка конструктора копирования\n";
+    cout << "5. Проверка оператора присваивания\n";
+
     cout << "\nВыбор: ";
 }

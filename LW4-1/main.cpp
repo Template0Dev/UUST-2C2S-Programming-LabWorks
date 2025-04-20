@@ -1,7 +1,6 @@
 #include <iostream>
 #include "request_distributor.h"
 #include "grouping_operations.h"
-#include "main.h"
 
 void specifySettings() {
     setlocale(LC_ALL, "RU");

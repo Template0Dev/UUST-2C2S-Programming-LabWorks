@@ -141,6 +141,9 @@
     <ClInclude Include="grouping_operations.h" />
     <ClInclude Include="search_operations.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="data.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

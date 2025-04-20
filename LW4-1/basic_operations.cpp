@@ -1,7 +1,23 @@
 #include "basic_operations.h"
 #include "request_distributor.h"
 
-BasicOps::BasicOps(RECORD*& r, int& rc) : records(r), record_count(rc), capacity(rc) {}
+BasicOps::BasicOps(RECORD*& r, int& rc) : records(r), record_count(rc), capacity(rc+1) {}
+BasicOps::BasicOps(const BasicOps& other)
+    : records(other.records), record_count(other.record_count), capacity(other.capacity) {
+    if (other.record_count > 0) {
+        RECORD* newRecords = new RECORD[other.capacity];
+        for (int i = 0; i < other.record_count; ++i) {
+            newRecords[i] = other.records[i];
+        }
+
+        records = newRecords;
+        record_count = other.record_count;
+    }
+    else {
+        records = nullptr;
+        record_count = 0;
+    }
+}
 
 void BasicOps::resize() {
     capacity *= 2;
@@ -18,7 +34,7 @@ bool BasicOps::isOnlyPunctuation(const std::string& str) {
 }
 
 bool BasicOps::validateDate(const std::string& date) {
-    return std::regex_match(date, std::regex(R"(\d{2}\.\d{2}\.\d{2})"));
+    return std::regex_match(date, std::regex(R"(\d{2}\.\d{2}\.\d{4})"));
 }
 
 bool BasicOps::validateTime(const std::string& time) {
@@ -104,6 +120,7 @@ void BasicOps::addRecord() {
     } while (!validateTime(r.creation_time));
     std::cout << "Атрибуты: "; std::cin >> r.attributes;
 
+    resize();
     records[record_count++] = r;
 }
 
@@ -180,4 +197,26 @@ void BasicOps::sortAlphabetically() {
             }
         }
     }
+}
+
+BasicOps& BasicOps::operator=(const BasicOps& other) {
+    if (this != &other) {
+        // Delete old data
+        delete[] records;
+
+        capacity = other.capacity;
+        record_count = other.record_count;
+
+        if (record_count > 0) {
+            RECORD* newRecords = new RECORD[capacity];
+            for (int i = 0; i < record_count; ++i) {
+                newRecords[i] = other.records[i];
+            }
+            records = newRecords;
+        }
+        else {
+            records = nullptr;
+        }
+    }
+    return *this;
 }
