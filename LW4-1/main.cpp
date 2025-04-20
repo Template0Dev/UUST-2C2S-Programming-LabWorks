@@ -1,6 +1,23 @@
 #include <iostream>
 #include "request_distributor.h"
 #include "grouping_operations.h"
+#include "main.h"
+
+void specifySettings() {
+    setlocale(LC_ALL, "RU");
+}
+
+RequestDistributor initDistributor() {
+    RequestDistributor distributor;
+
+    char confirmation;
+    std::cout << "Загрузить тестовые данные (Y/N)? ";
+    std::cin >> confirmation;
+    if (confirmation == 'Y' || confirmation == 'y')
+        distributor.loadMockData();
+
+    return distributor;
+}
 
 void printMenu() {
     system("cls");
@@ -15,12 +32,8 @@ void printMenu() {
     std::cout << "\nВыбор: ";
 }
 
-int main() {
-    setlocale(LC_ALL, "RU");
-
-    RequestDistributor distributor;
-    distributor.loadMockData();
-
+void startMainWorkCycle(RequestDistributor& distributor)
+{
     int choice;
     do {
         printMenu();
@@ -35,7 +48,16 @@ int main() {
             default:
                 std::cout << "Некорректный выбор.\n";
         }
+
+        system("pause");
     } while (choice != 0);
+}
+
+int main() {
+    specifySettings();
+
+    RequestDistributor distributor = initDistributor();
+    startMainWorkCycle(distributor);
 
     return 0;
 }

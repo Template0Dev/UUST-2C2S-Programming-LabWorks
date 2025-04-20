@@ -29,7 +29,7 @@ void SearchOps::searchByFilename() {
     }
     else {
         cout << "Результаты поиска:\n";
-        BasicOps(results, found, found).displayRecords();
+        BasicOps(results, found).displayRecords();
     }
 
     char confirmation;
@@ -75,7 +75,7 @@ void SearchOps::sortByTime() {
 }
 
 void SearchOps::saveSearchResultsToFile() {
-    BasicOps(records, record_count, record_count).saveToFile();
+    BasicOps(records, record_count).saveToFile();
 }
 
 // === Friend Access Points ===

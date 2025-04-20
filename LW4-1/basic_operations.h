@@ -6,13 +6,12 @@
 #include <fstream>
 #include <iomanip>
 #include <regex>
-#include <windows.h>
 
 class BasicOps {
 private:
     RECORD*& records;
     int& record_count;
-    const int& capacity = 128;
+    int capacity;
 
     void resize();
 
@@ -22,6 +21,7 @@ private:
 
 public:
     BasicOps(RECORD*& r, int& rc);
+    BasicOps(const BasicOps& other);
 
     void loadFromFile();
     void saveToFile();
@@ -31,7 +31,7 @@ public:
     void sortByAttribute();
     void sortAlphabetically();
 
-    friend void executeBasicOperation(int choice, class RequestDistributor& distributor);
+    BasicOps& operator =(const BasicOps& other);
 };
 
 #endif

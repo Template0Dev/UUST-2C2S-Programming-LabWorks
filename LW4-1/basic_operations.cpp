@@ -1,11 +1,11 @@
 #include "basic_operations.h"
 #include "request_distributor.h"
 
-BasicOps::BasicOps(RECORD*& r, int& rc) : records(r), record_count(rc) {}
+BasicOps::BasicOps(RECORD*& r, int& rc) : records(r), record_count(rc), capacity(rc) {}
 
 void BasicOps::resize() {
-    int new_capacity = capacity * 2;
-    RECORD* new_records = new RECORD[new_capacity];
+    capacity *= 2;
+    RECORD* new_records = new RECORD[capacity];
     for (int i = 0; i < record_count; i++) {
         new_records[i] = records[i];
     }
@@ -54,7 +54,7 @@ void BasicOps::loadFromFile() {
         if (!file.fail()) record_count++;
     }
     file.close();
-    std::cout << "Данные загружены из файла: " << filename << '\n';
+    std::cout << "Данные загружены из файла: " << filename << ". Всего записей: " << record_count << "." << '\n';
 }
 
 void BasicOps::saveToFile() {
@@ -90,7 +90,6 @@ void BasicOps::saveToFile() {
 }
 
 void BasicOps::addRecord() {
-    if (record_count == capacity) resize();
     RECORD r;
     std::cout << "Каталог: "; std::cin >> r.file.directory;
     std::cout << "Имя файла: "; std::cin >> r.file.filename;
@@ -110,7 +109,7 @@ void BasicOps::addRecord() {
 
 void BasicOps::deleteRecord() {
     std::string filename;
-    std::cout << "Введите имя файла для удаления: ";
+    std::cout << "Введите имя для удаления: ";
     std::cin >> filename;
     if (isOnlyPunctuation(filename)) {
         std::cout << "Ошибка: имя файла не может состоять только из знаков препинания.\n";
@@ -180,19 +179,5 @@ void BasicOps::sortAlphabetically() {
                 records[j + 1] = temp;
             }
         }
-    }
-}
-
-void executeBasicOperation(int choice, RequestDistributor& distributor) {
-    BasicOps ops(distributor.records, distributor.record_count);
-    switch (choice) {
-        case 1: ops.loadFromFile(); break;
-        case 2: ops.saveToFile(); break;
-        case 3: ops.addRecord(); break;
-        case 4: ops.deleteRecord(); break;
-        case 5: ops.displayRecords(); break;
-        case 6: ops.sortByAttribute(); break;
-        case 7: ops.sortAlphabetically(); break;
-        default: std::cout << "Неизвестная операция.\n"; break;
     }
 }

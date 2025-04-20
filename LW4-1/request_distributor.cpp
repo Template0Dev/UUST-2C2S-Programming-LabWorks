@@ -6,7 +6,7 @@
 
 using namespace std;
 
-RequestDistributor::RequestDistributor() : records(nullptr), record_count(0) {}
+RequestDistributor::RequestDistributor() : record_count(1), records(new RECORD[record_count]) {}
 
 RequestDistributor::~RequestDistributor() {
     delete[] records;
@@ -27,7 +27,7 @@ void RequestDistributor::getRequest(int choice) {
     switch (choice)
     {
         case 1:
-            executeGroup(*this); break;
+            executeOperation(*this); break;
         case 2:
             executeGroup(*this); break;
         case 3:
@@ -40,15 +40,41 @@ void RequestDistributor::getRequest(int choice) {
 
 void executeOperation(RequestDistributor& dist) {
     BasicOps bops(dist.records, dist.record_count);
-    ops.sortByFilename();
+
+    int choice;
+    dist.printBasicMenu();
+    cin >> choice;
+
+    switch (choice) {
+        case 1: bops.loadFromFile(); break;
+        case 2: bops.saveToFile(); break;
+        case 3: bops.addRecord(); break;
+        case 4: bops.deleteRecord(); break;
+        case 5: bops.displayRecords(); break;
+        case 6: bops.sortByAttribute(); break;
+        case 7: bops.sortAlphabetically(); break;
+
+        default: std::cout << "Неизвестная операция.\n"; break;
+    }
+}
+
+void RequestDistributor::printBasicMenu() const
+{
+    cout << "1. Загрузить из файла\n";
+    cout << "2. Сохранить в файл\n";
+    cout << "3. Добавить запись\n";
+    cout << "4. Удалить запись\n";
+    cout << "5. Вывести записи\n";
+    cout << "6. Отсортировать по атрибутам\n";
+    cout << "7. Отсортировать по алфавиту\n";
+    cout << "\nВыбор: ";
 }
 
 void executeGroup(RequestDistributor& dist) {
     GroupingOps gops(dist.records, dist.record_count);
+
     int choice;
-    cout << "1. Группировать по расширению\n";
-    cout << "2. Группировать и  сортировать по частоте расширений\n";
-    cout << "Выбор: ";
+    dist.printGroupMenu();
     cin >> choice;
 
     switch (choice) {
@@ -66,13 +92,18 @@ void executeGroup(RequestDistributor& dist) {
     }
 }
 
+void RequestDistributor::printGroupMenu() const
+{
+    cout << "1. Группировать по расширению\n";
+    cout << "2. Группировать и  сортировать по частоте расширений\n";
+    cout << "\nВыбор: ";
+}
+
 void executeSearch(RequestDistributor& dist) {
     SearchOps sops(dist.records, dist.record_count);
+
     int choice;
-    cout << "1. Поиск по названию\n";
-    cout << "2. Поиск и сортировка по дате создания\n";
-    cout << "3. Поиск и сортировка по времени создания\n";
-    cout << "Выбор: ";
+    dist.printSearchMenu();
     cin >> choice;
 
     switch (choice) {
@@ -89,4 +120,12 @@ void executeSearch(RequestDistributor& dist) {
     if (confirmation == 'Y' || confirmation == 'y') {
         sops.saveSearchResultsToFile();
     }
+}
+
+void RequestDistributor::printSearchMenu() const
+{
+    cout << "1. Поиск по названию\n";
+    cout << "2. Поиск и сортировка по дате создания\n";
+    cout << "3. Поиск и сортировка по времени создания\n";
+    cout << "\nВыбор: ";
 }
