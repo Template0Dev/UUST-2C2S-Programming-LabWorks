@@ -2,55 +2,74 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <string>
 
 using namespace std;
 
-GroupingOps::GroupingOps(RECORD*& recs, int& count) : records(recs), record_count(count) {}
+GroupingOps::GroupingOps(RECORD*& recs, int& count)
+    : records(recs), record_count(count), groups(nullptr), group_count(0) {
+}
 
-void GroupingOps::getUniqueExtensions(char**& extensions, int*& counts, int& uniqueCount) {
-    uniqueCount = 0;
-    extensions = new char* [record_count];
-    counts = new int[record_count];
+GroupingOps::GroupingOps(const GroupingOps& other)
+    : records(other.records), record_count(other.record_count), group_count(other.group_count)
+{
+    groups = new EXTENSIONGROUP[group_count];
+    for (int i = 0; i < group_count; ++i) {
+        groups[i] = other.groups[i];
+    }
+}
+GroupingOps::~GroupingOps() {
+    delete[] groups;
+}
+
+void GroupingOps::getUniqueExtensions() {
+    delete[] groups;
+    groups = new EXTENSIONGROUP[record_count];
+    group_count = 0;
 
     for (int i = 0; i < record_count; ++i) {
+        string ext = records[i].file.extension;
         bool found = false;
-        for (int j = 0; j < uniqueCount; ++j) {
-            if (records[i].file.extension == extensions[j]) {
-                counts[j]++;
+        for (int j = 0; j < group_count; ++j) {
+            if (groups[j].extension == ext) {
+                groups[j].count++;
                 found = true;
                 break;
             }
         }
         if (!found) {
-            extensions[uniqueCount] = new char[records[i].file.extension.length() + 1];
-            strcpy(extensions[uniqueCount], records[i].file.extension.c_str());
-            counts[uniqueCount] = 1;
-            uniqueCount++;
+            groups[group_count++] = EXTENSIONGROUP(ext, 1);
         }
     }
 }
 
 void GroupingOps::groupByExtension() {
-    char** extensions;
-    int* counts;
-    int uniqueCount;
+    getUniqueExtensions(); // now stores in groups[]
+}
 
-    getUniqueExtensions(extensions, counts, uniqueCount);
-
-    cout << "+----------------+------------+" << endl;
-    cout << "| Расширение     | Кол-во     |" << endl;
-    cout << "+----------------+------------+" << endl;
-    for (int i = 0; i < uniqueCount; ++i) {
-        cout << "| " << setw(15) << left << extensions[i]
-            << "| " << setw(11) << counts[i] << "|" << endl;
+void GroupingOps::printGrouped(ostream& out) {
+    out << "+----------------+------------+\n";
+    out << "| Расширение     | Кол-во     |\n";
+    out << "+----------------+------------+\n";
+    for (int i = 0; i < group_count; ++i) {
+        out << "| " << setw(15) << left << groups[i].extension
+            << "| " << setw(11) << groups[i].count << "|\n";
     }
-    cout << "+----------------+------------+" << endl;
+    out << "+----------------+------------+\n";
+}
 
-    for (int i = 0; i < uniqueCount; ++i)
-        delete[] extensions[i];
-    delete[] extensions;
-    delete[] counts;
+void GroupingOps::saveGroupedToFile() {
+    string filename;
+    cout << "Введите имя файла для сохранения группировки: ";
+    cin >> filename;
+
+    ofstream out(filename);
+    if (!out.is_open()) {
+        cout << "Ошибка при открытии файла.\n";
+        return;
+    }
+
+    printGrouped(out);
+    cout << "Результаты сохранены в файл: " << filename << endl;
 }
 
 void GroupingOps::sortByExtensionFrequency() {
@@ -69,44 +88,24 @@ void GroupingOps::sortByExtensionFrequency() {
                 records[i] = records[j];
                 records[j] = temp;
 
-                freq_i = freq_j; // update for new records[i]
+                freq_i = freq_j;
             }
         }
     }
     cout << "Сортировка по частоте расширений выполнена.\n";
 }
 
-void GroupingOps::saveGroupedToFile() {
-    string filename;
-    cout << "Введите имя файла для сохранения группировки: ";
-    cin >> filename;
+GroupingOps& GroupingOps::operator=(const GroupingOps& other) {
+    if (this == &other) return *this;
 
-    ofstream out(filename);
-    if (!out.is_open()) {
-        cout << "Ошибка при открытии файла.\n";
-        return;
+    records = other.records;
+    record_count = other.record_count;
+    group_count = other.group_count;
+
+    groups = new EXTENSIONGROUP[group_count];
+    for (int i = 0; i < group_count; ++i) {
+        groups[i] = other.groups[i];
     }
 
-    char** extensions;
-    int* counts;
-    int uniqueCount;
-
-    getUniqueExtensions(extensions, counts, uniqueCount);
-
-    out << "+----------------+------------+\n";
-    out << "| Расширение     | Кол-во     |\n";
-    out << "+----------------+------------+\n";
-    for (int i = 0; i < uniqueCount; ++i) {
-        out << "| " << setw(15) << left << extensions[i]
-            << "| " << setw(11) << counts[i] << "|\n";
-    }
-    out << "+----------------+------------+\n";
-
-    out.close();
-    cout << "Результаты сохранены в файл: " << filename << endl;
-
-    for (int i = 0; i < uniqueCount; ++i)
-        delete[] extensions[i];
-    delete[] extensions;
-    delete[] counts;
+    return *this;
 }

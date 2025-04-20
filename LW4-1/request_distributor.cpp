@@ -106,17 +106,47 @@ void executeGroup(RequestDistributor& dist) {
     cin >> choice;
 
     switch (choice) {
-        case 1: gops.groupByExtension(); break;
-        case 2: gops.groupByExtension(); gops.sortByExtensionFrequency(); break;
+        case 1: {
+            gops.groupByExtension(); 
+            gops.printGrouped(cout);
+
+            break;
+        }
+        case 2: {
+            gops.groupByExtension(); 
+            gops.sortByExtensionFrequency(); 
+
+            gops.printGrouped(cout);
+
+            break;
+        }
         case 3: {
             gops.groupByExtension();
 
             cout << "Текущий объект:\n";
-            gops.printGroupMenu();
+            gops.printGrouped(cout);
+
+            cout << "\nКопия объекта:\n";
+            GroupingOps(gops).printGrouped(cout);
 
             break;
         }
         case 4: {
+            gops.groupByExtension();
+
+            GroupingOps gopsB = gops;
+            GroupingOps gopsA = gops;
+            gopsB = gopsA = gops;
+
+            cout << "Копия B:\n";
+            gopsB.printGrouped(cout);
+
+            cout << "\nКопия A:\n";
+            gopsA.printGrouped(cout);
+
+            cout << "\nОснова:\n";
+            gops.printGrouped(cout);
+
             break;
         }
 

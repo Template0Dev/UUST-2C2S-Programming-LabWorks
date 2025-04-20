@@ -8,15 +8,25 @@ private:
     RECORD*& records;
     int& record_count;
 
-    void getUniqueExtensions(char**& extensions, int*& counts, int& uniqueCount);
+    EXTENSIONGROUP* groups;
+    int group_count;
+
+    void getUniqueExtensions();
 
 public:
     GroupingOps(RECORD*& recs, int& count);
+    GroupingOps(const GroupingOps& other);
+    ~GroupingOps();
 
     void groupByExtension();
     void sortByExtensionFrequency();
+
+    void printGrouped(std::ostream& out);
     void saveGroupedToFile();
+
     friend void executeGroup(class RequestDistributor&);
+
+    GroupingOps& operator=(const GroupingOps& other);
 };
 
 #endif
