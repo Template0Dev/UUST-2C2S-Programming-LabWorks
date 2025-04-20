@@ -128,7 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="grouping_operations.cpp" />
-    <ClCompile Include="reference.cpp" />
     <ClCompile Include="basic_operations.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="request_distributor.cpp" />
@@ -143,6 +142,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="data.txt" />
+    <Text Include="group.txt" />
+    <Text Include="search.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

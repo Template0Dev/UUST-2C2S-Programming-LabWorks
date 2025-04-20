@@ -27,9 +27,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="reference.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="request_distributor.h">
       <Filter>Header Files</Filter>
     </ClCompile>
@@ -62,6 +59,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="data.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="search.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="group.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
