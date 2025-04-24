@@ -10,6 +10,7 @@ struct RECORD {
     std::string creation_time;
     std::string attributes;
 
+    friend std::istream& operator >>(std::istream& is, RECORD& rec);
     friend std::ostream& operator <<(std::ostream& out, const RECORD& rec);
 };
 

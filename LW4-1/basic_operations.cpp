@@ -1,6 +1,7 @@
 #include "basic_operations.h"
 #include "request_distributor.h"
 #include "utils.h"
+#include <sstream>
 
 #pragma region Область: базовые функции.
 
@@ -70,37 +71,12 @@ void BasicOps::loadFromFile() {
         if (line.find('+') != std::string::npos) break;
         if (record_count == capacity) resize();
 
-        FILEINFO fi;
-        RECORD& rec = records[record_count];
-
-        int fieldIndex = 0;
-        size_t start = 0;
-        for (size_t i = 0; i < line.size(); ++i) {
-            if (line[i] == '|') {
-                if (fieldIndex > 0) {
-                    std::string field = line.substr(start, i - start);
-                    trim(field);
-
-                    switch (fieldIndex - 1) {
-                        case 0: fi.directory = field; break;
-                        case 1: fi.filename = field; break;
-                        case 2: fi.extension = field; break;
-                        case 3: rec.creation_date = field; break;
-                        case 4: rec.creation_time = field; break;
-                        case 5: rec.attributes = field; break;
-
-                        default: break;
-                    }
-                }
-
-                start = i + 1;
-                ++fieldIndex;
-            }
+        std::istringstream iss(line);
+        if (iss >> records[record_count]) {
+            ++record_count;
         }
-
-        rec.file = fi;
-        record_count++;
     }
+
 
     file.close();
     std::cout << "Данные загружены из файла: " << filename << ". Всего записей: " << record_count << "."

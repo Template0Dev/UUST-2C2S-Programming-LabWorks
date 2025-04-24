@@ -8,6 +8,7 @@ struct FILEINFO {
     std::string filename;
     std::string extension;
 
+    friend std::istream& operator >>(std::istream& is, FILEINFO& fi);
     friend std::ostream& operator <<(std::ostream& out, const FILEINFO& fi);
 };
 
