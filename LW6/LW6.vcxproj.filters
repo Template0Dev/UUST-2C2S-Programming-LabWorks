@@ -13,10 +13,132 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Controllers">
+      <UniqueIdentifier>{90ee6d6e-5cc6-4fa1-b8b2-a4a05be0dbb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{d00c5246-3bac-4c0e-a46f-07a6aacb85c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Wrappers">
+      <UniqueIdentifier>{932ed217-d406-4690-9767-38fed266145b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers\Data">
+      <UniqueIdentifier>{91d6971c-30d3-495b-85de-d7fb1a3da660}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers\Repos">
+      <UniqueIdentifier>{996a9651-4786-4129-8c08-04297293323f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers\Testers">
+      <UniqueIdentifier>{ed415946-b6df-4db8-bc75-2525d402a123}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controllers\Views">
+      <UniqueIdentifier>{59b5aabb-f1ab-49f0-ab0a-7eec2ec03dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{51679060-1e0a-434a-90de-3f66d9483c31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers">
+      <UniqueIdentifier>{0d255dc2-69cb-47ee-8216-41ec9e6e3274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Wrappers">
+      <UniqueIdentifier>{b7bfa214-d74d-41eb-9685-d2d97f199b41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\Data">
+      <UniqueIdentifier>{6488bf90-257d-47e8-bad8-8ff666841bab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\Repos">
+      <UniqueIdentifier>{4d749f46-9974-48ee-83ab-9ef6b4a9f979}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\Testers">
+      <UniqueIdentifier>{e00bc35c-0491-4d9b-b769-d051dccfc02f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers\Views">
+      <UniqueIdentifier>{c47a8262-a954-4c32-a2d0-c2c20dfaff1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LW6.cpp">
+    <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DateTime.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Mobile.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Talk.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="TalkTableData.cpp">
+      <Filter>Source Files\Models\Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="CLIController.cpp">
+      <Filter>Source Files\Controllers\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogController.cpp">
+      <Filter>Source Files\Controllers\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="AssignmentOperatorsTester.cpp">
+      <Filter>Source Files\Controllers\Testers</Filter>
+    </ClCompile>
+    <ClCompile Include="CopyConstructorsTester.cpp">
+      <Filter>Source Files\Controllers\Testers</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralDataRepo.cpp">
+      <Filter>Source Files\Controllers\Repos</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicOperationsController.cpp">
+      <Filter>Source Files\Controllers\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupingOperationsController.cpp">
+      <Filter>Source Files\Controllers\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="SearchingOperationsController.cpp">
+      <Filter>Source Files\Controllers\Data</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DateTime.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Mobile.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Talk.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupedTalk.h">
+      <Filter>Header Files\Models\Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="TalkTableData.h">
+      <Filter>Header Files\Models\Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicOperationsController.h">
+      <Filter>Header Files\Controllers\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupingOperationsController.h">
+      <Filter>Header Files\Controllers\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchingOperationsController.h">
+      <Filter>Header Files\Controllers\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralDataRepo.h">
+      <Filter>Header Files\Controllers\Repos</Filter>
+    </ClInclude>
+    <ClInclude Include="AssignmentOperatorsTester.h">
+      <Filter>Header Files\Controllers\Testers</Filter>
+    </ClInclude>
+    <ClInclude Include="CopyConstructorsTester.h">
+      <Filter>Header Files\Controllers\Testers</Filter>
+    </ClInclude>
+    <ClInclude Include="CLIController.h">
+      <Filter>Header Files\Controllers\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogController.h">
+      <Filter>Header Files\Controllers\Views</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
