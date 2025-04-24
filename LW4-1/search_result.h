@@ -2,6 +2,7 @@
 #define SEARCH_RESULT_H
 
 #include <string>
+#include <iostream>
 
 struct SEARCHRESULT {
     std::string filename;
@@ -11,7 +12,9 @@ struct SEARCHRESULT {
     std::string creation_time;
 
     SEARCHRESULT() = default;
-    SEARCHRESULT(const std::string& fn, const std::string& ext, const std::string& p, const std::string& date, const std::string& time) : filename(fn), extension(ext), path(p), creation_date(date), creation_time(time) {}
+    SEARCHRESULT(const std::string& fn, const std::string& ext, const std::string& p, const std::string& date, const std::string& time) : filename(fn), extension(ext), path(p), creation_date(date), creation_time(time) {};
+
+    friend std::ostream& operator <<(std::ostream& os, const SEARCHRESULT& result);
 };
 
 #endif

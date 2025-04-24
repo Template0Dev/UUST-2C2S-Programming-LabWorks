@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="extensions_group.cpp" />
     <ClCompile Include="extensions_group.h" />
     <ClCompile Include="grouping_operations.cpp" />
     <ClCompile Include="basic_operations.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="request_distributor.cpp" />
     <ClCompile Include="request_distributor.h" />
     <ClCompile Include="search_operations.cpp" />
+    <ClCompile Include="search_result.cpp" />
     <ClCompile Include="search_result.h" />
   </ItemGroup>
   <ItemGroup>

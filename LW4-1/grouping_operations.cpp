@@ -41,16 +41,31 @@ void GroupingOps::groupByExtension() {
     getUniqueExtensions();
 }
 
-void GroupingOps::printGrouped(ostream& out) {
-    out << "+----------------+------------+\n";
-    out << "| Расширение     | Кол-во     |\n";
-    out << "+----------------+------------+\n";
-    for (int i = 0; i < group_count; ++i) {
-        out << "| " << setw(15) << left << groups[i].extension
-            << "| " << setw(11) << groups[i].count << "|\n";
-    }
-    out << "+----------------+------------+\n";
+#pragma region Область: Вывод сгруппированных данных.
+
+void GroupingOps::printResults(std::ostream& out) {
+    printResultTableHeader(out);
+    printResultTableBody(out);
+    printResultTableFooter(out);
 }
+
+void GroupingOps::printResultTableHeader(std::ostream& out) {
+    out << "+----------------+------------+" << std::endl;
+    out << "| Расширение     | Кол-во     |" << std::endl;
+    out << "+----------------+------------+" << std::endl;
+}
+
+void GroupingOps::printResultTableBody(std::ostream& out) {
+    for (int i = 0; i < group_count; ++i) {
+        out << groups[i];
+    }
+}
+
+void GroupingOps::printResultTableFooter(std::ostream& out) {
+    out << "+----------------+------------+" << std::endl;
+}
+#pragma endregion
+
 
 void GroupingOps::saveGroupedToFile() {
     string filename;
@@ -63,7 +78,7 @@ void GroupingOps::saveGroupedToFile() {
         return;
     }
 
-    printGrouped(out);
+    printResults(out);
     cout << "Результаты сохранены в файл: " << filename << endl;
 }
 

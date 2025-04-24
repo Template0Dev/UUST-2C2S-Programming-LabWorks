@@ -22,6 +22,9 @@
     <Filter Include="Source Files\controllers">
       <UniqueIdentifier>{02cf517e-01b8-432b-bb6a-bc98307ac698}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\models">
+      <UniqueIdentifier>{9feac5cf-4bdc-48fe-8506-096c3958ad07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,6 +53,12 @@
     </ClCompile>
     <ClCompile Include="search_result.h">
       <Filter>Header Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="search_result.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="extensions_group.cpp">
+      <Filter>Source Files\models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

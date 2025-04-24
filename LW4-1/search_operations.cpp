@@ -6,12 +6,10 @@
 
 using namespace std;
 
+#pragma region Область: Конструкторы / Деструкторы.
+
 SearchOps::SearchOps(RECORD*& recordsRef, int& countRef)
 	: records(recordsRef), record_count(countRef), search_results(nullptr), search_count(0) {
-}
-
-SearchOps::~SearchOps() {
-	clearResults();
 }
 
 SearchOps::SearchOps(const SearchOps& other)
@@ -23,6 +21,11 @@ SearchOps::SearchOps(const SearchOps& other)
 		}
 	}
 }
+
+SearchOps::~SearchOps() {
+	clearResults();
+}
+#pragma endregion
 
 void SearchOps::clearResults() {
 	delete[] search_results;
@@ -110,19 +113,30 @@ void SearchOps::replaceCurrentArrayWithSearchResults()
 	cout << "Результаты поиска были установлены как текущие записи.\n";
 }
 
-void SearchOps::printResults(ostream& os) const {
-	os << "+-------------------------+-----------+----------------------------+------------+----------+\n";
-	os << "| Имя файла               | Расшир.   | Путь                       | Дата       | Время    |\n";
-	os << "+-------------------------+-----------+----------------------------+------------+----------+\n";
-	for (int i = 0; i < search_count; ++i) {
-		os << "| " << setw(24) << left << search_results[i].filename
-			<< "| " << setw(9) << left << search_results[i].extension
-			<< "| " << setw(27) << left << search_results[i].path
-			<< "| " << setw(10) << left << search_results[i].creation_date
-			<< "| " << setw(8) << left << search_results[i].creation_time << "|\n";
-	}
-	os << "+-------------------------+-----------+----------------------------+------------+----------+\n";
+#pragma region Область: Вывод данных.
+
+void SearchOps::printResults(ostream& os) const { 
+	printResultTableHeader(os);
+	printResultTableBody(os);
+	printResultTableFooter(os);
 }
+
+void SearchOps::printResultTableHeader(ostream& os) const {
+	os << "+-------------------------+-----------+----------------------------+------------+----------+" << std::endl;
+	os << "| Имя файла               | Расшир.   | Путь                       | Дата       | Время    |" << std::endl;
+	os << "+-------------------------+-----------+----------------------------+------------+----------+" << std::endl;
+}
+
+void SearchOps::printResultTableBody(ostream& os) const {
+	for (int i = 0; i < search_count; ++i) {
+		os << search_results[i];
+	}
+}
+
+void SearchOps::printResultTableFooter(ostream& os) const {
+	os << "+-------------------------+-----------+----------------------------+------------+----------+" << std::endl;
+}
+#pragma endregion
 
 void SearchOps::saveSearchResultsToFile() const {
 	string filename;

@@ -3,6 +3,7 @@
 
 #include "record.h"
 #include "search_result.h"
+#include <ostream>
 
 class SearchOps {
 private:
@@ -30,6 +31,10 @@ public:
 
 private:
     void clearResults();
+
+    void printResultTableHeader(std::ostream& os) const;
+    void printResultTableBody(std::ostream& os) const;
+    void printResultTableFooter(std::ostream& os) const;
 
     void sortResultsByDate();
     void sortResultsByTime();
