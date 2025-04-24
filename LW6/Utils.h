@@ -4,7 +4,7 @@
 #include <string>
 
 
-namespace LW5
+namespace LW6
 {
 	std::string trim(const std::string& s);
 

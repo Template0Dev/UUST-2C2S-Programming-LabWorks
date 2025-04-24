@@ -160,6 +160,11 @@
     <ClInclude Include="Talk.h" />
     <ClInclude Include="TalkTableData.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Test-Group.txt" />
+    <Text Include="Test-Search.txt" />
+    <Text Include="Test-Data.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

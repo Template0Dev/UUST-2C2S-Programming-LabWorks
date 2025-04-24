@@ -141,4 +141,15 @@
       <Filter>Header Files\Controllers\Views</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Test-Data.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Test-Group.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Test-Search.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

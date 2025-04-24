@@ -5,7 +5,7 @@
 #include <ostream>
 
 
-namespace LW5
+namespace LW6
 {
     namespace Controllers
     {

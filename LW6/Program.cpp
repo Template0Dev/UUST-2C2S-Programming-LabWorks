@@ -8,7 +8,7 @@ int main()
 
     try
     {
-        LW5::Controllers::Views::CLIController().beginWork();
+        LW6::Controllers::Views::CLIController().beginWork();
     }
     catch (...)
     {
