@@ -49,15 +49,15 @@ void executeOperation(RequestDistributor& dist) {
         case 2: bops.saveToFile(); break;
         case 3: bops.addRecord(); break;
         case 4: bops.deleteRecord(); break;
-        case 5: bops.printRecords(); break;
+        case 5: bops.printRecords(cout); break;
         case 6: bops.sortByAttribute(); break;
         case 7: bops.sortAlphabetically(); break;
         case 8: {
             cout << "Текущий объект:\n";
-            bops.printRecords();
+            bops.printRecords(cout);
 
             cout << "\nКопия объекта:\n";
-            BasicOps(bops).printRecords();
+            BasicOps(bops).printRecords(cout);
 
             break;
         }
@@ -69,13 +69,13 @@ void executeOperation(RequestDistributor& dist) {
             bopsB = bopsA = bops;
 
             cout << "Копия B:\n";
-            bopsB.printRecords();
+            bopsB.printRecords(cout);
 
             cout << "\nКопия A:\n";
-            bopsA.printRecords();
+            bopsA.printRecords(cout);
 
             cout << "\nОснова:\n";
-            bops.printRecords();
+            bops.printRecords(cout);
 
             break;
         }

@@ -1,5 +1,8 @@
 #include "basic_operations.h"
 #include "request_distributor.h"
+#include "utils.h"
+
+#pragma region Область: базовые функции.
 
 BasicOps::BasicOps(RECORD*& r, int& rc) : records(r), record_count(rc), capacity(rc+1) {}
 BasicOps::BasicOps(const BasicOps& other) : records(other.records), record_count(other.record_count), capacity(other.capacity) {
@@ -38,27 +41,19 @@ void BasicOps::resize() {
     delete[] records;
     records = new_records;
 }
+#pragma endregion
 
-bool BasicOps::isOnlyPunctuation(const std::string& str) const {
-    return std::regex_match(str, std::regex(R"([[:punct:]]+)"));
-}
-
-bool BasicOps::validateDate(const std::string& date) const {
-    return std::regex_match(date, std::regex(R"(\d{2}\.\d{2}\.\d{4})"));
-}
-
-bool BasicOps::validateTime(const std::string& time) const {
-    return std::regex_match(time, std::regex(R"(\d{2}:\d{2})"));
-}
+#pragma region Область: функции сохранения / загрузки.
 
 void BasicOps::loadFromFile() {
     std::string filename;
     std::cout << "Введите имя файла для загрузки: ";
     std::cin >> filename;
     if (isOnlyPunctuation(filename)) {
-        std::cout << "Ошибка: имя файла не может состоять только из знаков препинания.\n";
+        std::cout << "Ошибка: имя файла не может состоять только из знаков препинания." << std::endl;
         return;
     }
+
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::ofstream newFile(filename);
@@ -66,54 +61,79 @@ void BasicOps::loadFromFile() {
         std::cout << "Файл не найден. Создан новый файл: " << filename << '\n';
         return;
     }
+
     record_count = 0;
-    std::string header;
-    std::getline(file, header);
-    while (!file.eof()) {
+    std::string line;
+
+    for (int i = 0; i < 3 && std::getline(file, line); ++i);
+    while (std::getline(file, line)) {
+        if (line.find('+') != std::string::npos) break;
         if (record_count == capacity) resize();
-        file >> records[record_count].file.directory
-            >> records[record_count].file.filename
-            >> records[record_count].file.extension
-            >> records[record_count].creation_date
-            >> records[record_count].creation_time
-            >> records[record_count].attributes;
-        if (!file.fail()) record_count++;
+
+        FILEINFO fi;
+        RECORD& rec = records[record_count];
+
+        int fieldIndex = 0;
+        size_t start = 0;
+        for (size_t i = 0; i < line.size(); ++i) {
+            if (line[i] == '|') {
+                if (fieldIndex > 0) {
+                    std::string field = line.substr(start, i - start);
+                    trim(field);
+
+                    switch (fieldIndex - 1) {
+                        case 0: fi.directory = field; break;
+                        case 1: fi.filename = field; break;
+                        case 2: fi.extension = field; break;
+                        case 3: rec.creation_date = field; break;
+                        case 4: rec.creation_time = field; break;
+                        case 5: rec.attributes = field; break;
+
+                        default: break;
+                    }
+                }
+
+                start = i + 1;
+                ++fieldIndex;
+            }
+        }
+
+        rec.file = fi;
+        record_count++;
     }
+
     file.close();
-    std::cout << "Данные загружены из файла: " << filename << ". Всего записей: " << record_count << "." << '\n';
+    std::cout << "Данные загружены из файла: " << filename << ". Всего записей: " << record_count << "."
+        << std::endl;
 }
 
 void BasicOps::saveToFile() const {
     std::string filename;
     std::cout << "Введите имя файла для сохранения: ";
     std::cin >> filename;
+
     if (isOnlyPunctuation(filename)) {
-        std::cout << "Ошибка: имя файла не может состоять только из знаков препинания.\n";
+        std::cout << "Ошибка: имя файла не может состоять только из знаков препинания." 
+            << std::endl;
         return;
     }
+
     std::ofstream file(filename);
     if (!file.is_open()) {
-        std::cout << "Не удалось открыть файл: " << filename << '\n';
+        std::cout << "Не удалось открыть файл: " << filename
+            << std::endl;
         return;
     }
-    file << std::setw(18) << std::left << "Каталог"
-        << std::setw(18) << "Имя файла"
-        << std::setw(10) << "Расширение"
-        << std::setw(15) << "Дата"
-        << std::setw(10) << "Время"
-        << std::setw(18) << "Атрибуты" << '\n';
-
-    for (int i = 0; i < record_count; i++) {
-        file << std::setw(18) << std::left << records[i].file.directory
-            << std::setw(18) << records[i].file.filename
-            << std::setw(10) << records[i].file.extension
-            << std::setw(15) << records[i].creation_date
-            << std::setw(10) << records[i].creation_time
-            << std::setw(18) << records[i].attributes << '\n';
-    }
+    
+    printRecords(file);
     file.close();
-    std::cout << "Данные сохранены в файл: " << filename << '\n';
+
+    std::cout << "Данные сохранены в файл: " << filename
+        << std::endl;
 }
+#pragma endregion
+
+#pragma region Область: функции работы с данными.
 
 void BasicOps::addRecord() {
     RECORD r;
@@ -163,26 +183,6 @@ void BasicOps::deleteRecord() {
     std::cout << "Файл не найден.\n";
 }
 
-void BasicOps::printRecords() const {
-    std::cout << "+-------------------+-------------------+-----------+----------------+-----------+--------------------+\n";
-    std::cout << "| " << std::setw(18) << std::left << "Каталог"
-        << "| " << std::setw(18) << "Имя файла"
-        << "| " << std::setw(10) << "Расширение"
-        << "| " << std::setw(15) << "Дата"
-        << "| " << std::setw(10) << "Время"
-        << "| " << std::setw(18) << "Атрибуты" << " |\n";
-    std::cout << "+-------------------+-------------------+-----------+----------------+-----------+--------------------+\n";
-    for (int i = 0; i < record_count; ++i) {
-        std::cout << "| " << std::setw(18) << std::left << records[i].file.directory
-            << "| " << std::setw(18) << records[i].file.filename
-            << "| " << std::setw(10) << records[i].file.extension
-            << "| " << std::setw(15) << records[i].creation_date
-            << "| " << std::setw(10) << records[i].creation_time
-            << "| " << std::setw(18) << records[i].attributes << " |\n";
-    }
-    std::cout << "+-------------------+-------------------+-----------+----------------+-----------+--------------------+\n";
-}
-
 void BasicOps::sortByAttribute() {
     for (int i = 0; i < record_count - 1; ++i) {
         for (int j = 0; j < record_count - i - 1; ++j) {
@@ -208,6 +208,64 @@ void BasicOps::sortAlphabetically() {
         }
     }
 }
+#pragma endregion
+
+#pragma region Область: вывод данных.
+
+void BasicOps::printRecords(std::ostream& os) const {
+    printRecordsTableHeader(os);
+    printRecordsTableBody(os);
+    printRecordsTableFooter(os);
+}
+
+void BasicOps::printRecordsTableHeader(std::ostream& os) const {
+    os << "+-------------------+-------------------+-----------+----------------+-----------+--------------------+"
+        << std::endl;
+    os << "| " << std::setw(18) << std::left << "Каталог"
+        << "| " << std::setw(18) << "Имя файла"
+        << "| " << std::setw(10) << "Расширение"
+        << "| " << std::setw(15) << "Дата"
+        << "| " << std::setw(10) << "Время"
+        << "| " << std::setw(18) << "Атрибуты" << " |"
+        << std::endl;
+    os << "+-------------------+-------------------+-----------+----------------+-----------+--------------------+"
+        << std::endl;
+
+}
+
+void BasicOps::printRecordsTableBody(std::ostream& os) const {
+    for (int i = 0; i < record_count; i++) {
+        os << "| " << std::setw(18) << std::left << records[i].file.directory
+            << "| " << std::setw(18) << records[i].file.filename
+            << "| " << std::setw(10) << records[i].file.extension
+            << "| " << std::setw(15) << records[i].creation_date
+            << "| " << std::setw(10) << records[i].creation_time
+            << "| " << std::setw(18) << records[i].attributes << " |"
+            << std::endl;
+    }
+}
+
+void BasicOps::printRecordsTableFooter(std::ostream& os) const {
+    os << "+-------------------+-------------------+-----------+----------------+-----------+--------------------+"
+        << std::endl;
+
+}
+#pragma endregion
+
+#pragma region Область: функции валидации данных.
+
+bool BasicOps::isOnlyPunctuation(const std::string& str) const {
+    return std::regex_match(str, std::regex(R"([[:punct:]]+)"));
+}
+
+bool BasicOps::validateDate(const std::string& date) const {
+    return std::regex_match(date, std::regex(R"(\d{2}\.\d{2}\.\d{4})"));
+}
+
+bool BasicOps::validateTime(const std::string& time) const {
+    return std::regex_match(time, std::regex(R"(\d{2}:\d{2})"));
+}
+#pragma endregion
 
 BasicOps& BasicOps::operator=(const BasicOps& other) {
     if (this != &other) {

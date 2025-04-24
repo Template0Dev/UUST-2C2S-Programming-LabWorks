@@ -132,21 +132,25 @@
   <ItemGroup>
     <ClCompile Include="extensions_group.cpp" />
     <ClCompile Include="extensions_group.h" />
+    <ClCompile Include="file_info.cpp" />
     <ClCompile Include="grouping_operations.cpp" />
     <ClCompile Include="basic_operations.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="record.cpp" />
     <ClCompile Include="record.h" />
     <ClCompile Include="request_distributor.cpp" />
     <ClCompile Include="request_distributor.h" />
     <ClCompile Include="search_operations.cpp" />
     <ClCompile Include="search_result.cpp" />
     <ClCompile Include="search_result.h" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basic_operations.h" />
     <ClInclude Include="file_info.h" />
     <ClInclude Include="grouping_operations.h" />
     <ClInclude Include="search_operations.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data.txt" />

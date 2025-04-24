@@ -60,6 +60,15 @@
     <ClCompile Include="extensions_group.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
+    <ClCompile Include="file_info.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="record.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basic_operations.h">
@@ -73,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="file_info.h">
       <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
