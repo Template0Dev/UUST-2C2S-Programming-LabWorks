@@ -116,24 +116,24 @@ void SearchOps::replaceCurrentArrayWithSearchResults()
 #pragma region Область: Вывод данных.
 
 void SearchOps::printResults(ostream& os) const { 
-	printResultTableHeader(os);
-	printResultTableBody(os);
-	printResultTableFooter(os);
+	printResultsTableHeader(os);
+	printResultsTableBody(os);
+	printResultsTableFooter(os);
 }
 
-void SearchOps::printResultTableHeader(ostream& os) const {
+void SearchOps::printResultsTableHeader(ostream& os) const {
 	os << "+-------------------------+-----------+----------------------------+------------+----------+" << std::endl;
 	os << "| Имя файла               | Расшир.   | Путь                       | Дата       | Время    |" << std::endl;
 	os << "+-------------------------+-----------+----------------------------+------------+----------+" << std::endl;
 }
 
-void SearchOps::printResultTableBody(ostream& os) const {
+void SearchOps::printResultsTableBody(ostream& os) const {
 	for (int i = 0; i < search_count; ++i) {
 		os << search_results[i];
 	}
 }
 
-void SearchOps::printResultTableFooter(ostream& os) const {
+void SearchOps::printResultsTableFooter(ostream& os) const {
 	os << "+-------------------------+-----------+----------------------------+------------+----------+" << std::endl;
 }
 #pragma endregion

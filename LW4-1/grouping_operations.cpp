@@ -44,24 +44,24 @@ void GroupingOps::groupByExtension() {
 #pragma region Область: Вывод сгруппированных данных.
 
 void GroupingOps::printResults(std::ostream& out) {
-    printResultTableHeader(out);
-    printResultTableBody(out);
-    printResultTableFooter(out);
+    printResultsTableHeader(out);
+    printResultsTableBody(out);
+    printResultsTableFooter(out);
 }
 
-void GroupingOps::printResultTableHeader(std::ostream& out) {
+void GroupingOps::printResultsTableHeader(std::ostream& out) const {
     out << "+----------------+------------+" << std::endl;
     out << "| Расширение     | Кол-во     |" << std::endl;
     out << "+----------------+------------+" << std::endl;
 }
 
-void GroupingOps::printResultTableBody(std::ostream& out) {
+void GroupingOps::printResultsTableBody(std::ostream& out) const {
     for (int i = 0; i < group_count; ++i) {
         out << groups[i];
     }
 }
 
-void GroupingOps::printResultTableFooter(std::ostream& out) {
+void GroupingOps::printResultsTableFooter(std::ostream& out) const {
     out << "+----------------+------------+" << std::endl;
 }
 #pragma endregion

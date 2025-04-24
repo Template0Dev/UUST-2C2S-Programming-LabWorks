@@ -32,9 +32,9 @@ public:
 private:
     void clearResults();
 
-    void printResultTableHeader(std::ostream& os) const;
-    void printResultTableBody(std::ostream& os) const;
-    void printResultTableFooter(std::ostream& os) const;
+    void printResultsTableHeader(std::ostream& os) const;
+    void printResultsTableBody(std::ostream& os) const;
+    void printResultsTableFooter(std::ostream& os) const;
 
     void sortResultsByDate();
     void sortResultsByTime();

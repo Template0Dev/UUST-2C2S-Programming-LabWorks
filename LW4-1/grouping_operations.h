@@ -26,9 +26,9 @@ public:
     void saveGroupedToFile();
 
 private:
-    void printResultTableHeader(std::ostream& out);
-    void printResultTableBody(std::ostream& out);
-    void printResultTableFooter(std::ostream& out);
+    void printResultsTableHeader(std::ostream& out) const;
+    void printResultsTableBody(std::ostream& out) const;
+    void printResultsTableFooter(std::ostream& out) const;
 
 public:
     friend void executeGroup(class RequestDistributor&);

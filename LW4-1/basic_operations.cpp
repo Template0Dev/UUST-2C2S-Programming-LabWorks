@@ -39,15 +39,15 @@ void BasicOps::resize() {
     records = new_records;
 }
 
-bool BasicOps::isOnlyPunctuation(const std::string& str) {
+bool BasicOps::isOnlyPunctuation(const std::string& str) const {
     return std::regex_match(str, std::regex(R"([[:punct:]]+)"));
 }
 
-bool BasicOps::validateDate(const std::string& date) {
+bool BasicOps::validateDate(const std::string& date) const {
     return std::regex_match(date, std::regex(R"(\d{2}\.\d{2}\.\d{4})"));
 }
 
-bool BasicOps::validateTime(const std::string& time) {
+bool BasicOps::validateTime(const std::string& time) const {
     return std::regex_match(time, std::regex(R"(\d{2}:\d{2})"));
 }
 
@@ -83,7 +83,7 @@ void BasicOps::loadFromFile() {
     std::cout << "Данные загружены из файла: " << filename << ". Всего записей: " << record_count << "." << '\n';
 }
 
-void BasicOps::saveToFile() {
+void BasicOps::saveToFile() const {
     std::string filename;
     std::cout << "Введите имя файла для сохранения: ";
     std::cin >> filename;
@@ -163,7 +163,7 @@ void BasicOps::deleteRecord() {
     std::cout << "Файл не найден.\n";
 }
 
-void BasicOps::displayRecords() {
+void BasicOps::printRecords() const {
     std::cout << "+-------------------+-------------------+-----------+----------------+-----------+--------------------+\n";
     std::cout << "| " << std::setw(18) << std::left << "Каталог"
         << "| " << std::setw(18) << "Имя файла"
