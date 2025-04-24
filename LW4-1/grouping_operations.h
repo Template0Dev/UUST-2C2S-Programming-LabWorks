@@ -1,7 +1,8 @@
 #ifndef GROUPING_OPERATIONS_H
 #define GROUPING_OPERATIONS_H
 
-#include "file_structs.h"
+#include "record.h"
+#include "extensions_group.h"
 
 class GroupingOps {
 private:

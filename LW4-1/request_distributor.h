@@ -1,7 +1,7 @@
 #ifndef REQUEST_DISTRIBUTOR_H
 #define REQUEST_DISTRIBUTOR_H
 
-#include "file_structs.h"
+#include "record.h"
 
 class RequestDistributor {
 public:

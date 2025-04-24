@@ -1,7 +1,8 @@
 #ifndef SEARCH_OPERATIONS_H
 #define SEARCH_OPERATIONS_H
 
-#include "file_structs.h"
+#include "record.h"
+#include "search_result.h"
 
 class SearchOps {
 private:

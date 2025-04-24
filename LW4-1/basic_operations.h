@@ -1,7 +1,7 @@
 #ifndef BASIC_OPERATIONS_H
 #define BASIC_OPERATIONS_H
 
-#include "file_structs.h"
+#include "record.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
