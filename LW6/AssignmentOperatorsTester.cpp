@@ -108,6 +108,11 @@ namespace LW6
 				testSearchingOperationsControllerAssignmentOperator(newRepoB.searchingOperationsController, workArray, workCount, &phoneNumber);
 
 			}
+
+			void AssignmentOperatorsTester::testInheritedDataRepositoryAssignmentOperator(const Repos::InheritedDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
+			{
+
+			}
 		}
 	}
 }

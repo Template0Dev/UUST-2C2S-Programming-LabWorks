@@ -19,7 +19,7 @@ namespace LW6
 
 			CLIController::CLIController()
 			{
-				processingRepo = Repos::GeneralDataRepo();
+				processingRepo = Repos::InheritedDataRepo();
 
 				mainArray = new Models::Talk[INIT_SIZE];
 				workArray = new Models::Talk[INIT_SIZE];
@@ -283,7 +283,7 @@ namespace LW6
 					}
 					case 3:
 					{
-						auto result = controller.processingRepo.saveToFile(fileName, controller.workArray, controller.workCount);
+						auto result = controller.processingRepo.saveRecordsToFile(fileName, controller.workArray, controller.workCount);
 						if (result)
 							std::cout << "Удалось сохранить данные в файл." << std::endl;
 						else
@@ -327,12 +327,12 @@ namespace LW6
 					}
 					case 110:
 					{
-						Testers::CopyConstructorsTester().testBasicOperationsControllerCopyConstructor(controller.processingRepo.basicOperationsController, controller.workArray, controller.workCount);
+						Testers::CopyConstructorsTester().testBasicOperationsControllerCopyConstructor(controller.processingRepo.getBOPS(), controller.workArray, controller.workCount);
 						break;
 					}
 					case 210:
 					{
-						Testers::AssignmentOperatorsTester().testBasicOperationsControllerAssignmentOperator(controller.processingRepo.basicOperationsController, controller.workArray, controller.workCount);
+						Testers::AssignmentOperatorsTester().testBasicOperationsControllerAssignmentOperator(controller.processingRepo.getBOPS(), controller.workArray, controller.workCount);
 						break;
 					}
 
@@ -344,7 +344,7 @@ namespace LW6
 				}
 			}
 
-			void executeGroupingOperation(const CLIController& controller, int operation)
+			void executeGroupingOperation(CLIController& controller, int operation)
 			{
 				int groupCount = 0;
 				auto* groups = controller.processingRepo.groupByPhone(controller.workArray, controller.workCount, groupCount);
@@ -358,14 +358,14 @@ namespace LW6
 					}
 					case 21:
 					{
-						controller.processingRepo.sortGroupsByCount(groups, groupCount);
+						controller.processingRepo.sortByTalkCount(groups, groupCount);
 						std::cout << "Группировка по номеру телефона (сортировка по количеству звонков):" << std::endl;
 
 						break;
 					}
 					case 22:
 					{
-						controller.processingRepo.sortGroupsByPhone(groups, groupCount);
+						controller.processingRepo.sortByPhoneNumber(groups, groupCount);
 						std::cout << "Группировка по номеру телефона (сортировка по номеру):" << std::endl;
 
 						break;
@@ -373,12 +373,12 @@ namespace LW6
 
 					case 120:
 					{
-						Testers::CopyConstructorsTester().testGroupingOperationsControllerCopyConstructor(controller.processingRepo.groupingOperationsController, controller.workArray, controller.workCount);
+						Testers::CopyConstructorsTester().testGroupingOperationsControllerCopyConstructor(controller.processingRepo.getGOPS(), controller.workArray, controller.workCount);
 						break;
 					}
 					case 220:
 					{
-						Testers::AssignmentOperatorsTester().testGroupingOperationsControllerAssignmentOperator(controller.processingRepo.groupingOperationsController, controller.workArray, controller.workCount);
+						Testers::AssignmentOperatorsTester().testGroupingOperationsControllerAssignmentOperator(controller.processingRepo.getGOPS(), controller.workArray, controller.workCount);
 						break;
 					}
 
@@ -390,12 +390,12 @@ namespace LW6
 				}
 				// Ignore output part if specified operation is testing, because result was already printed.
 				if (operation != 110 && operation != 210)
-					controller.processingRepo.printGroups(std::cout, groups, groupCount);
+					controller.processingRepo.printGroupsTable(std::cout, groups, groupCount);
 
 				if (DialogController::askConfirmation(std::string("Сохранить результат группировки в файл")))
 				{
 					auto fileName = DialogController::getFileName();
-					controller.processingRepo.saveGroupsToFile(&fileName, groups, groupCount);
+					controller.processingRepo.saveGroupsToFile(fileName, groups, groupCount);
 				}
 
 				delete[] groups;
@@ -404,7 +404,7 @@ namespace LW6
 			void executeSearchingOperation(CLIController& controller, int operation, const std::string& phoneNumber)
 			{
 				int matchCount = 0;
-				Models::Talk* matches = controller.processingRepo.searchByPhone(controller.workArray, controller.workCount, phoneNumber, matchCount);
+				Models::Talk* matches = controller.processingRepo.searchByPhoneNumber(controller.workArray, controller.workCount, phoneNumber, matchCount);
 				if (matchCount == 0)
 				{
 					std::cout << "Записей с номером " << phoneNumber << " не найдено." << std::endl;
@@ -420,14 +420,14 @@ namespace LW6
 					}
 					case 31:
 					{
-						controller.processingRepo.sortMatchesByDate(matches, matchCount);
+						controller.processingRepo.sortByCallDate(matches, matchCount);
 						std::cout << "Поиск по номеру телефона с сортировкой по дате начала разговора:" << std::endl;
 
 						break;
 					}
 					case 32:
 					{
-						controller.processingRepo.sortMatchesByTime(matches, matchCount);
+						controller.processingRepo.sortByCallTime(matches, matchCount);
 						std::cout << "Поиск по номеру телефона с сортировкой по времени начала разговора:" << std::endl;
 
 						break;
@@ -435,12 +435,12 @@ namespace LW6
 
 					case 130:
 					{
-						Testers::CopyConstructorsTester().testSearchingOperationsControllerCopyConstructor(controller.processingRepo.searchingOperationsController, controller.workArray, controller.workCount, &phoneNumber);
+						Testers::CopyConstructorsTester().testSearchingOperationsControllerCopyConstructor(controller.processingRepo.getSOPS(), controller.workArray, controller.workCount, &phoneNumber);
 						break;
 					}
 					case 230:
 					{
-						Testers::AssignmentOperatorsTester().testSearchingOperationsControllerAssignmentOperator(controller.processingRepo.searchingOperationsController, controller.workArray, controller.workCount, &phoneNumber);
+						Testers::AssignmentOperatorsTester().testSearchingOperationsControllerAssignmentOperator(controller.processingRepo.getSOPS(), controller.workArray, controller.workCount, &phoneNumber);
 						break;
 					}
 
@@ -457,7 +457,7 @@ namespace LW6
 				if (DialogController::askConfirmation(std::string("Сохранить результат поиска в файл")))
 				{
 					auto fileName = DialogController::getFileName();
-					controller.processingRepo.saveMatchesToFile(&fileName, matches, matchCount);
+					controller.processingRepo.saveMatchesToFile(fileName, matches, matchCount);
 				}
 
 				if (DialogController::askConfirmation(std::string("Перезаписать рабочий массив результатами поиска")))
@@ -473,19 +473,19 @@ namespace LW6
 				}
 			}
 
-			void executeGeneralOperation(const CLIController& controller, int operation)
+			void executeGeneralOperation(CLIController& controller, int operation)
 			{
 				auto phoneNumber = DialogController::getString(std::string("Введите номер телефона для поиска"));
 				switch (operation)
 				{
 					case 100:
 					{
-						Testers::CopyConstructorsTester().testGeneralDataRepositoryCopyConstructor(controller.processingRepo, controller.workArray, controller.workCount, phoneNumber);
+						Testers::CopyConstructorsTester().testInheritedDataRepositoryCopyConstructor(controller.processingRepo, controller.workArray, controller.workCount, phoneNumber);
 						break;
 					}
 					case 200:
 					{
-						Testers::AssignmentOperatorsTester().testGeneralDataRepositoryAssignmentOperator(controller.processingRepo, controller.workArray, controller.workCount, phoneNumber);
+						Testers::AssignmentOperatorsTester().testInheritedDataRepositoryAssignmentOperator(controller.processingRepo, controller.workArray, controller.workCount, phoneNumber);
 						break;
 					}
 
@@ -503,7 +503,7 @@ namespace LW6
 			bool CLIController::addNewEntrySubFunction()
 			{
 				Models::Talk newEntry = userGuidedTalkCreation();
-				return processingRepo.addRecord(workArray, workCount, newEntry);
+				return processingRepo.addRecord(newEntry, workArray, workCount);
 			}
 
 			bool CLIController::removeEntrySubFunction()
@@ -518,7 +518,7 @@ namespace LW6
 				}
 				std::cin.ignore();
 
-				return processingRepo.deleteRecord(workArray, workCount, index);
+				return processingRepo.deleteRecord(index, workArray, workCount);
 			}
 #pragma endregion
 

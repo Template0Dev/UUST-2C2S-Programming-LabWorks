@@ -128,7 +128,7 @@ namespace LW6
 			}
 
 			void SearchingOperationsController::displayMatches(const Models::Talk* workArray, int workCount) const { BasicOperationsController().displayData(workArray, workCount); }
-			bool SearchingOperationsController::saveMatchesToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const { return BasicOperationsController().saveToFile(fileName, workArray, workCount); }
+			bool SearchingOperationsController::saveMatchesToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const { return BasicOperationsController().saveRecordsToFile(fileName, workArray, workCount); }
 
 			SearchingOperationsController& SearchingOperationsController::operator =(const SearchingOperationsController& other)
 			{

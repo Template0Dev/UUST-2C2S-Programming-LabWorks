@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Talk.h"
-#include "GeneralDataRepo.h"
+#include "InheritedDataRepo.h"
 
 
 namespace LW6
@@ -14,7 +14,7 @@ namespace LW6
             {
             private:
                 static const int INIT_SIZE = 128;
-                Repos::GeneralDataRepo processingRepo;
+                Repos::InheritedDataRepo processingRepo;
 
                 int mainCount = 0;
                 Models::Talk* mainArray;
@@ -29,9 +29,9 @@ namespace LW6
 
                 void beginWork();
                 friend void executeBasicOperation(CLIController& controller, int operation, const std::string& fileName);
-                friend void executeGroupingOperation(const CLIController& controller, int operation);
+                friend void executeGroupingOperation(CLIController& controller, int operation);
                 friend void executeSearchingOperation(CLIController& controller, int operation, const std::string& phoneNumber);
-                friend void executeGeneralOperation(const CLIController& controller, int operation);
+                friend void executeGeneralOperation(CLIController& controller, int operation);
 
             private:
                 void proceedWorkCycle();

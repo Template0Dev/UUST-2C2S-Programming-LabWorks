@@ -188,7 +188,7 @@ namespace LW6
 
                 output << std::string(totalWidth, '=') << '\n';
             }
-            bool GroupingOperationsController::saveToFile(const std::string& fileName, const Models::Wrappers::GroupedTalk* groups, int count) const
+            bool GroupingOperationsController::saveGroupsToFile(const std::string& fileName, const Models::Wrappers::GroupedTalk* groups, int count) const
             {
                 std::ofstream outputFile(fileName);
                 if (!outputFile.is_open())

@@ -11,7 +11,7 @@ namespace LW6
 
             void GeneralDataRepo::loadFromKeyboard(Models::Talk*& mainArray, Models::Talk*& workArray, int& mainCount, int& workCount) { basicOperationsController.loadFromKeyboard(mainArray, workArray, mainCount, workCount); }
             bool GeneralDataRepo::loadFromFile(const std::string& fileName, Models::Talk*& mainArray, Models::Talk*& workArray, int& mainCount, int& workCount) { return basicOperationsController.loadFromFile(fileName, mainArray, workArray, mainCount, workCount); }
-            bool GeneralDataRepo::saveToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const { return basicOperationsController.saveToFile(fileName, workArray, workCount); }
+            bool GeneralDataRepo::saveRecordsToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const { return basicOperationsController.saveRecordsToFile(fileName, workArray, workCount); }
             void GeneralDataRepo::displayData(const Models::Talk* workArray, int workCount) const { basicOperationsController.displayData(workArray, workCount); }
 
             bool GeneralDataRepo::addRecord(Models::Talk*& array, int& count, const Models::Talk& newRecord) const { return basicOperationsController.addRecord(newRecord, array, count); }
@@ -32,7 +32,7 @@ namespace LW6
             void GeneralDataRepo::sortGroupsByPhone(Models::Wrappers::GroupedTalk* groups, int groupCount) const { groupingOperationsController.sortByPhoneNumber(groups, groupCount); }
 
             void GeneralDataRepo::printGroups(std::ostream& os, const Models::Wrappers::GroupedTalk* groups, int groupCount) const { groupingOperationsController.printGroupsTable(os, groups, groupCount); }
-            bool GeneralDataRepo::saveGroupsToFile(const std::string* fileName, const Models::Wrappers::GroupedTalk* groups, int groupCount) const { return groupingOperationsController.saveToFile(*fileName, groups, groupCount); }
+            bool GeneralDataRepo::saveGroupsToFile(const std::string* fileName, const Models::Wrappers::GroupedTalk* groups, int groupCount) const { return groupingOperationsController.saveGroupsToFile(*fileName, groups, groupCount); }
 #pragma endregion
 
 #pragma region Region: Searching Operations.

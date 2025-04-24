@@ -167,7 +167,7 @@ namespace LW6
 				inFile.close();
 				return true;
 			}
-			bool BasicOperationsController::saveToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const
+			bool BasicOperationsController::saveRecordsToFile(const std::string& fileName, const Models::Talk* workArray, int workCount) const
 			{
 				std::ofstream outputFile(fileName);
 				if (!outputFile.is_open())

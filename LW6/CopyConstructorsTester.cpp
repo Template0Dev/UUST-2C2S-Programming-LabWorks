@@ -75,6 +75,11 @@ namespace LW6
 				std::cout << std::endl << "Операции поиска:" << std::endl;
 				testSearchingOperationsControllerCopyConstructor(repoCopy.searchingOperationsController, workArray, workCount, &phoneNumber);
 			}
+
+			void CopyConstructorsTester::testInheritedDataRepositoryCopyConstructor(const Repos::InheritedDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
+			{
+
+			}
 		}
 	}
 }

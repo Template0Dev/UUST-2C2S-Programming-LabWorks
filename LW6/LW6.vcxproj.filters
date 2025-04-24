@@ -99,6 +99,9 @@
     <ClCompile Include="SearchingOperationsController.cpp">
       <Filter>Source Files\Controllers\Data</Filter>
     </ClCompile>
+    <ClCompile Include="InheritedDataRepo.cpp">
+      <Filter>Source Files\Controllers\Repos</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DateTime.h">
@@ -139,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="DialogController.h">
       <Filter>Header Files\Controllers\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="InheritedDataRepo.h">
+      <Filter>Header Files\Controllers\Repos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

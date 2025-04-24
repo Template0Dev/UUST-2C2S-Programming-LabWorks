@@ -138,6 +138,7 @@
     <ClCompile Include="DialogController.cpp" />
     <ClCompile Include="GeneralDataRepo.cpp" />
     <ClCompile Include="GroupingOperationsController.cpp" />
+    <ClCompile Include="InheritedDataRepo.cpp" />
     <ClCompile Include="Mobile.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="SearchingOperationsController.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="GeneralDataRepo.h" />
     <ClInclude Include="GroupedTalk.h" />
     <ClInclude Include="GroupingOperationsController.h" />
+    <ClInclude Include="InheritedDataRepo.h" />
     <ClInclude Include="Mobile.h" />
     <ClInclude Include="SearchingOperationsController.h" />
     <ClInclude Include="Talk.h" />
