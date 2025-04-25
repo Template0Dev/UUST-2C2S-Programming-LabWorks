@@ -106,12 +106,46 @@ namespace LW6
 
 				std::cout << std::endl << "Îïåðàöèè ïîèñêà:" << std::endl;
 				testSearchingOperationsControllerAssignmentOperator(newRepoB.searchingOperationsController, workArray, workCount, &phoneNumber);
-
 			}
 
-			void AssignmentOperatorsTester::testInheritedDataRepositoryAssignmentOperator(const Repos::InheritedDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
+			void AssignmentOperatorsTester::testInheritedDataRepositoryAssignmentOperator(Repos::InheritedDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
 			{
+				Repos::InheritedDataRepo newRepoA;
+				Repos::InheritedDataRepo newRepoB;
+				newRepoA = newRepoB = dataRepo;
 
+				// Testing Basic Repo.
+				std::cout << std::endl << std::endl << "[ ÎÑÍÎÂÍÎÉ ÐÅÏÎÇÈÒÎÐÈÉ ]" << std::endl;
+				std::cout << "Áàçîâûå îïåðàöèè:" << std::endl;
+				testBasicOperationsControllerAssignmentOperator(dataRepo.getBOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Îïåðàöèè ãðóïïèðîâêè:" << std::endl;
+				testGroupingOperationsControllerAssignmentOperator(dataRepo.getGOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Îïåðàöèè ïîèñêà:" << std::endl;
+				testSearchingOperationsControllerAssignmentOperator(dataRepo.getSOPS(), workArray, workCount, &phoneNumber);
+
+				// Testing Repo's Copy — A.
+				std::cout << std::endl << std::endl << "[ ÏÅÐÅÏÐÈÑÂÎÅÍÍÛÉ ÐÅÏÎÇÈÒÎÐÈÉ (A) ]" << std::endl;
+				std::cout << "Áàçîâûå îïåðàöèè:" << std::endl;
+				testBasicOperationsControllerAssignmentOperator(newRepoA.getBOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Îïåðàöèè ãðóïïèðîâêè:" << std::endl;
+				testGroupingOperationsControllerAssignmentOperator(newRepoA.getGOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Îïåðàöèè ïîèñêà:" << std::endl;
+				testSearchingOperationsControllerAssignmentOperator(newRepoA.getSOPS(), workArray, workCount, &phoneNumber);
+
+				// Testing Repo's Copy — B.
+				std::cout << std::endl << std::endl << "[ ÏÅÐÅÏÐÈÑÂÎÅÍÍÛÉ ÐÅÏÎÇÈÒÎÐÈÉ (B) ]" << std::endl;
+				std::cout << "Áàçîâûå îïåðàöèè:" << std::endl;
+				testBasicOperationsControllerAssignmentOperator(newRepoB.getBOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Îïåðàöèè ãðóïïèðîâêè:" << std::endl;
+				testGroupingOperationsControllerAssignmentOperator(newRepoB.getGOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Îïåðàöèè ïîèñêà:" << std::endl;
+				testSearchingOperationsControllerAssignmentOperator(newRepoB.getSOPS(), workArray, workCount, &phoneNumber);
 			}
 		}
 	}

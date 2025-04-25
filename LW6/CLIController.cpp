@@ -389,7 +389,7 @@ namespace LW6
 					}
 				}
 				// Ignore output part if specified operation is testing, because result was already printed.
-				if (operation != 110 && operation != 210)
+				if (operation != 120 && operation != 220)
 					controller.processingRepo.printGroupsTable(std::cout, groups, groupCount);
 
 				if (DialogController::askConfirmation(std::string("Сохранить результат группировки в файл")))
@@ -451,7 +451,7 @@ namespace LW6
 					}
 				}
 				// Ignore output part if specified operation is testing, because result was already printed.
-				if (operation != 120 && operation != 220)
+				if (operation != 130 && operation != 230)
 					controller.processingRepo.displayMatches(matches, matchCount);
 
 				if (DialogController::askConfirmation(std::string("Сохранить результат поиска в файл")))

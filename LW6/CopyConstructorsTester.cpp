@@ -76,9 +76,31 @@ namespace LW6
 				testSearchingOperationsControllerCopyConstructor(repoCopy.searchingOperationsController, workArray, workCount, &phoneNumber);
 			}
 
-			void CopyConstructorsTester::testInheritedDataRepositoryCopyConstructor(const Repos::InheritedDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
+			void CopyConstructorsTester::testInheritedDataRepositoryCopyConstructor(Repos::InheritedDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const
 			{
+				auto repoCopy = Repos::InheritedDataRepo(dataRepo);
 
+				// Basic Repo test.
+				std::cout << std::endl << std::endl << "[ БАЗОВЫЙ РЕПОЗИТОРИЙ ]" << std::endl;
+				std::cout << "Базовые операции:" << std::endl;
+				testBasicOperationsControllerCopyConstructor(dataRepo.getBOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Операции группировки:" << std::endl;
+				testGroupingOperationsControllerCopyConstructor(dataRepo.getGOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Операции поиска:" << std::endl;
+				testSearchingOperationsControllerCopyConstructor(dataRepo.getSOPS(), workArray, workCount, &phoneNumber);
+
+				// Repo's Copy test.
+				std::cout << std::endl << std::endl << "[ КОПИЯ РЕПОЗИТОРИЯ ]" << std::endl;
+				std::cout << "Базовые операции:" << std::endl;
+				testBasicOperationsControllerCopyConstructor(repoCopy.getBOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Операции группировки:" << std::endl;
+				testGroupingOperationsControllerCopyConstructor(repoCopy.getGOPS(), workArray, workCount);
+
+				std::cout << std::endl << "Операции поиска:" << std::endl;
+				testSearchingOperationsControllerCopyConstructor(repoCopy.getSOPS(), workArray, workCount, &phoneNumber);
 			}
 		}
 	}

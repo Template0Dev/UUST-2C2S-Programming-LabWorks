@@ -22,7 +22,7 @@ namespace LW6
 				void testSearchingOperationsControllerCopyConstructor(const Data::SearchingOperationsController searchingController, const Models::Talk* workArray, int workCount, const std::string* phoneNumber) const;
 
 				void testGeneralDataRepositoryCopyConstructor(const Repos::GeneralDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const;
-				void testInheritedDataRepositoryCopyConstructor(const Repos::InheritedDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const;
+				void testInheritedDataRepositoryCopyConstructor(Repos::InheritedDataRepo dataRepo, const Models::Talk* workArray, int workCount, const std::string& phoneNumber) const;
 			};
 		}
 	}
