@@ -12,16 +12,16 @@ namespace LW6
             Data::SearchingOperationsController& InheritedDataRepo::getSOPS() { return static_cast<Data::SearchingOperationsController&>(*this); }
 
             InheritedDataRepo::InheritedDataRepo() : Data::BasicOperationsController(), Data::GroupingOperationsController(), Data::SearchingOperationsController() {};
-            InheritedDataRepo::InheritedDataRepo(const InheritedDataRepo& other) = default;
+            InheritedDataRepo::InheritedDataRepo(const InheritedDataRepo& other) : Data::BasicOperationsController(other), Data::GroupingOperationsController(other), Data::SearchingOperationsController(other) {};
             InheritedDataRepo::~InheritedDataRepo() = default;
 
-            InheritedDataRepo& InheritedDataRepo::operator=(const InheritedDataRepo& other)
+            InheritedDataRepo& InheritedDataRepo::operator =(const InheritedDataRepo& other)
             {
                 if (this != &other)
                 {
-                    Data::BasicOperationsController::operator=(other);
-                    Data::GroupingOperationsController::operator=(other);
-                    Data::SearchingOperationsController::operator=(other);
+                    Data::BasicOperationsController::operator =(other);
+                    Data::GroupingOperationsController::operator =(other);
+                    Data::SearchingOperationsController::operator =(other);
                 }
 
                 return *this;
